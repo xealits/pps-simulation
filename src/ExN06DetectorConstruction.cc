@@ -1,4 +1,4 @@
-//
+///
 // ********************************************************************
 // * License and Disclaimer                                           *
 // *                                                                  *
@@ -42,6 +42,10 @@
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
 
+
+
+#include "G4NistManager.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 ExN06DetectorConstruction::ExN06DetectorConstruction()
@@ -82,9 +86,84 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   Water->AddElement(H, 2);
   Water->AddElement(O, 1);
 
-//
-// ------------ Generate & Add Material Properties Table ------------
-//
+
+  G4String name, symbol;
+  G4int ncomponents, natoms;
+
+  // Quartz with refraction
+  a = 16.00*g/mole;
+  G4Element* elO  = new G4Element(name="Oxygen"  ,symbol="O" , z= 8., a);
+
+  a = 28.09*g/mole;
+  G4Element* elSi = new G4Element(name="Silicon", symbol="Si", z=14., a);
+
+  density = 2.200*g/cm3;
+  // G4Material* SiO2 = new G4Material(name="quartz", density, ncomponents=2);
+  // SiO2->AddElement(elSi, natoms=1);
+  // SiO2->AddElement(elO , natoms=2);
+
+  G4NistManager* nist = G4NistManager::Instance();
+  G4Material* SiO2 = nist->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
+  //
+  // ------------ Generate & Add Material Properties Table ------------
+  //
+
+
+  // Quartz refraction from:
+  // I. H. Malitson. Interspecimen Comparison of the Refractive Index of Fused Silica
+  // at http://refractiveindex.info/?shelf=main&book=SiO2&page=Malitson
+
+  const G4int QuartzRefractionEntries = 10;
+  G4double QuartzPhotonEnergy[QuartzRefractionEntries] =
+  { 5.90476190476191*eV, 5.06122448979592*eV, 4.42857142857143*eV, 3.93650793650794*eV, 3.54285714285714*eV,
+    3.22077922077922*eV, 2.95238095238095*eV, 2.72527472527473*eV, 2.53061224489796*eV, 2.36190476190476*eV};/*,
+    2.21428571428571*eV, 2.08403361344538*eV, 1.96825396825397*eV, 1.86466165413534*eV, 1.77142857142857*eV,
+    1.68707482993197*eV, 1.61038961038961*eV, 1.54037267080745*eV, 1.47619047619048*eV, 1.41714285714286*eV,
+    1.36263736263736*eV, 1.31216931216931*eV, 1.26530612244898*eV, 1.22167487684729*eV, 1.18095238095238*eV,
+    1.14285714285714*eV, 1.10714285714286*eV, 1.07359307359307*eV, 1.04201680672269*eV, 1.01224489795918*eV};/*,
+    0.984126984126984*eV, 0.957528957528958*eV, 0.932330827067669*eV, 0.908424908424908*eV, 0.885714285714286*eV,
+    0.86411149825784*eV, 0.843537414965986*eV, 0.823920265780731*eV, 0.805194805194805*eV, 0.787301587301587*eV,
+    0.770186335403727*eV, 0.753799392097264*eV, 0.738095238095238*eV, 0.723032069970845*eV, 0.708571428571429*eV,
+    0.694677871148459*eV, 0.681318681318681*eV, 0.668463611859838*eV, 0.656084656084656*eV, 0.644155844155844*eV,
+    0.63265306122449*eV, 0.621553884711779*eV, 0.610837438423645*eV, 0.600484261501211*eV, 0.59047619047619*eV,
+    0.580796252927401*eV, 0.571428571428571*eV, 0.562358276643991*eV, 0.553571428571428*eV, 0.545054945054945*eV,
+    0.536796536796537*eV, 0.528784648187633*eV, 0.521008403361345*eV, 0.513457556935818*eV, 0.506122448979592*eV,
+    0.498993963782696*eV, 0.492063492063492*eV, 0.4853228962818*eV, 0.478764478764479*eV, 0.472380952380952*eV,
+    0.466165413533835*eV, 0.460111317254174*eV, 0.454212454212454*eV, 0.448462929475588*eV, 0.442857142857143*eV,
+    0.437389770723104*eV, 0.43205574912892*eV, 0.426850258175559*eV, 0.421768707482993*eV, 0.416806722689076*eV,
+    0.411960132890365*eV, 0.407224958949097*eV, 0.402597402597403*eV, 0.398073836276083*eV, 0.393650793650794*eV,
+    0.389324960753532*eV, 0.385093167701863*eV, 0.380952380952381*eV, 0.376899696048632*eV, 0.372932330827068*eV,
+    0.369047619047619*eV, 0.365243004418262*eV, 0.361516034985423*eV, 0.357864357864358*eV, 0.354285714285714*eV,
+    0.350777934936351*eV, 0.34733893557423*eV, 0.343966712898752*eV, 0.340659340659341*eV, 0.337414965986395*eV,
+    0.334231805929919*eV };*/
+
+  G4double QuartzRefractiveIndex[QuartzRefractionEntries] =
+  { 1.5383576204905, 1.5102724365895, 1.4941636611188, 1.4839008951423, 1.476891413496,
+    1.4718556531995, 1.4680936900401, 1.46519309996, 1.4628966820387, 1.4610366660574};/*,
+    1.4594995356592, 1.458206104926, 1.4570996888769, 1.4561387969803, 1.4552924662623,
+    1.454537192876, 1.4538548630589, 1.4532313266004, 1.4526553936728, 1.4521181167939,
+    1.451612268629, 1.4511319566977, 1.4506723353353, 1.4502293877559, 1.4497997593263,
+    1.4493806287126, 1.4489696073537, 1.4485646603469, 1.4481640436751, 1.4477662540207};/*,
+    1.4473699883562, 1.4469741111889, 1.4465776278426, 1.4461796625343, 1.4457794402848,
+    1.4453762719132, 1.4449695415266, 1.4445586960405, 1.4441432363602, 1.4437227099274,
+    1.4432967043935, 1.4428648422301, 1.4424267761167, 1.4419821849822, 1.4415307705927,
+    1.4410722546016, 1.4406063759896, 1.440132888836, 1.4396515603723, 1.4391621692763,
+    1.438664504173, 1.438158362312, 1.4376435483981, 1.4371198735528, 1.4365871543902,
+    1.4360452121918, 1.435493872166, 1.4349329627838, 1.4343623151781, 1.4337817626007,
+    1.4331911399286, 1.4325902832137, 1.431979029271, 1.4313572152994, 1.4307246785328,
+    1.4300812559156, 1.4294267838019, 1.4287610976737, 1.4280840318763, 1.4273954193693,
+    1.4266950914905, 1.4259828777305, 1.4252586055186, 1.4245221000158, 1.4237731839158,
+    1.4230116772521, 1.4222373972096, 1.4214501579411, 1.4206497703869, 1.4198360420966,
+    1.4190087770532, 1.4181677754984, 1.4173128337577, 1.4164437440668, 1.415560294396,
+    1.414662268275, 1.4137494446147, 1.412821597528, 1.411878496148, 1.4109199044426,
+    1.4099455810268, 1.4089552789703, 1.4079487456017, 1.4069257223074, 1.4058859443263,
+    1.4048291405385, 1.4037550332482, 1.402663337961, 1.401553763154, 1.4004260100389,
+    1.3992797723176 };*/
+
+
+
+
+
   const G4int nEntries = 32;
 
   G4double PhotonEnergy[nEntries] =
@@ -132,9 +211,30 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   G4MaterialPropertiesTable* myMPT1 = new G4MaterialPropertiesTable();
 
   myMPT1->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1,nEntries)
-        ->SetSpline(true);
+       ->SetSpline(true);
+  // myMPT1->AddConstProperty("RINDEX", 2); // DOES NOT WORK
+
+
   myMPT1->AddProperty("ABSLENGTH",    PhotonEnergy, Absorption1,     nEntries)
-        ->SetSpline(true);
+       ->SetSpline(true);
+
+
+
+  G4MaterialPropertiesTable* quartzMPT = new G4MaterialPropertiesTable();
+
+  quartzMPT->AddProperty("RINDEX",       QuartzPhotonEnergy, QuartzRefractiveIndex, QuartzRefractionEntries)
+       ->SetSpline(true);
+  // quartzMPT->AddConstProperty("RINDEX", 2); // DOES NOT WORK
+
+  quartzMPT->AddProperty("ABSLENGTH",    QuartzPhotonEnergy, Absorption1,     nEntries)
+       ->SetSpline(true);
+
+
+
+  // SiO2->SetMaterialPropertiesTable(quartzMPT);
+  SiO2->SetMaterialPropertiesTable(myMPT1);
+
+/*
   myMPT1->AddProperty("FASTCOMPONENT",PhotonEnergy, ScintilFast,     nEntries)
         ->SetSpline(true);
   myMPT1->AddProperty("SLOWCOMPONENT",PhotonEnergy, ScintilSlow,     nEntries)
@@ -145,7 +245,9 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   myMPT1->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
   myMPT1->AddConstProperty("SLOWTIMECONSTANT",10.*ns);
   myMPT1->AddConstProperty("YIELDRATIO",0.8);
+*/
 
+/*
   const G4int NUMENTRIES_water = 60;
 
   G4double ENERGY_water[NUMENTRIES_water] = {
@@ -192,12 +294,15 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   // gforward, gbackward, forward backward ratio
   G4double MIE_water_const[3]={0.99,0.99,0.8};
+*/
 
+/*
   myMPT1->AddProperty("MIEHG",ENERGY_water,MIE_water,NUMENTRIES_water)
         ->SetSpline(true);
   myMPT1->AddConstProperty("MIEHG_FORWARD",MIE_water_const[0]);
   myMPT1->AddConstProperty("MIEHG_BACKWARD",MIE_water_const[1]);
   myMPT1->AddConstProperty("MIEHG_FORWARD_RATIO",MIE_water_const[2]);
+*/
 
   Water->SetMaterialPropertiesTable(myMPT1);
 
@@ -243,7 +348,9 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   G4Box* waterTank_box = new G4Box("Tank", 1*cm, 1*cm, 5*cm);
 
   G4LogicalVolume* waterTank_log
-    = new G4LogicalVolume(waterTank_box,Water,"Tank"); //,0,0,0);
+    = new G4LogicalVolume(waterTank_box, Water,"Tank"); //,0,0,0);
+    // = new G4LogicalVolume(waterTank_box,SiO2,"Tank"); //,0,0,0);
+    // = new G4LogicalVolume(waterTank_box,Water,"Tank"); //,0,0,0);
 
 
   G4VPhysicalVolume* waterTank_phys
