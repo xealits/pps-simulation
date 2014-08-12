@@ -98,12 +98,14 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   G4Element* elSi = new G4Element(name="Silicon", symbol="Si", z=14., a);
 
   density = 2.200*g/cm3;
-  // G4Material* SiO2 = new G4Material(name="quartz", density, ncomponents=2);
-  // SiO2->AddElement(elSi, natoms=1);
-  // SiO2->AddElement(elO , natoms=2);
+  G4Material* SiO2 = new G4Material(name="quartz", density, ncomponents=2);
+  SiO2->AddElement(elSi, natoms=1);
+  SiO2->AddElement(elO , natoms=2);
 
-  G4NistManager* nist = G4NistManager::Instance();
-  G4Material* SiO2 = nist->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
+  // G4NistManager* nist = G4NistManager::Instance();
+  // G4Material* SiO2 = nist->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
+
+
   //
   // ------------ Generate & Add Material Properties Table ------------
   //
