@@ -45,6 +45,11 @@
 
 
 #include "G4NistManager.hh"
+#include "G4SDManager.hh"
+
+#include "LeadSD.hh"
+
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -98,11 +103,12 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   G4Element* elSi = new G4Element(name="Silicon", symbol="Si", z=14., a);
 
   density = 2.200*g/cm3;
+  // density = 1.0*g/cm3;
   G4Material* SiO2 = new G4Material(name="quartz", density, ncomponents=2);
   SiO2->AddElement(elSi, natoms=1);
   SiO2->AddElement(elO , natoms=2);
 
-  // G4NistManager* nist = G4NistManager::Instance();
+  G4NistManager* nist = G4NistManager::Instance();
   // G4Material* SiO2 = nist->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
 
 
@@ -197,6 +203,14 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
            30.000*m, 28.500*m, 27.000*m, 24.500*m, 22.000*m, 19.500*m,
            17.500*m, 14.500*m };
 
+  G4double Absorption2[nEntries] =
+           {.3*mm,  .4*mm,  .6*mm,  .9*mm, 1.2*mm, 1.3*mm,
+           1.5*mm, 1.7*mm, 1.8*mm, 2.0*mm, 2.6*mm, 3.5*mm,
+           4.5*mm, 4.7*mm, 5.2*mm, 5.2*mm, 5.5*mm, 5.2*mm,
+           5.2*mm, 4.7*mm, 4.5*mm, 4.1*mm, 3.7*mm, 3.3*mm,
+           3.0*mm, 2.8*mm, 2.7*mm, 2.4*mm, 2.2*mm, 1.9*mm,
+           1.7*mm, 1.4*mm };
+
   G4double ScintilFast[nEntries] =
             { 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
               1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
@@ -216,11 +230,27 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
        ->SetSpline(true);
   // myMPT1->AddConstProperty("RINDEX", 2); // DOES NOT WORK
 
-
   myMPT1->AddProperty("ABSLENGTH",    PhotonEnergy, Absorption1,     nEntries)
        ->SetSpline(true);
 
 
+  G4MaterialPropertiesTable* myMPT2 = new G4MaterialPropertiesTable();
+
+  myMPT2->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1,nEntries)
+       ->SetSpline(true);
+  // myMPT2->AddConstProperty("RINDEX", 2); // DOES NOT WORK
+
+  myMPT2->AddProperty("ABSLENGTH",    PhotonEnergy, Absorption2,     nEntries)
+       ->SetSpline(true);
+
+  
+  // myMPT2->AddConstProperty("ABSLENGTH",    0.001*mm);
+
+
+
+
+
+  // Quartz Properties
 
   G4MaterialPropertiesTable* quartzMPT = new G4MaterialPropertiesTable();
 
@@ -235,6 +265,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   // SiO2->SetMaterialPropertiesTable(quartzMPT);
   SiO2->SetMaterialPropertiesTable(myMPT1);
+  // SiO2->SetMaterialPropertiesTable(myMPT2);
 
 /*
   myMPT1->AddProperty("FASTCOMPONENT",PhotonEnergy, ScintilFast,     nEntries)
@@ -322,15 +353,29 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
               1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
               1.00, 1.00, 1.00, 1.00 };
 
-  G4MaterialPropertiesTable* myMPT2 = new G4MaterialPropertiesTable();
-  myMPT2->AddProperty("RINDEX", PhotonEnergy, RefractiveIndex2, nEntries);
+  G4MaterialPropertiesTable* airMPT = new G4MaterialPropertiesTable();
+  airMPT->AddProperty("RINDEX", PhotonEnergy, RefractiveIndex2, nEntries);
   
-  Air->SetMaterialPropertiesTable(myMPT2);
+  Air->SetMaterialPropertiesTable(airMPT);
+
+
+
+
+
+
+
+
 
 //
 // ------------- Volumes --------------
 
   G4bool checkOverlaps = true;
+
+
+
+
+
+
 
 // The experimental Hall
 //
@@ -344,13 +389,17 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   G4VPhysicalVolume* expHall_phys
     = new G4PVPlacement(0,G4ThreeVector(),expHall_log,"World",0,false,0, checkOverlaps);
 
+
+
+
+
 // The Water Tank
 //        
   //G4Box* waterTank_box = new G4Box("Tank",tank_x,tank_y,tank_z);
   G4Box* waterTank_box = new G4Box("Tank", 1*cm, 1*cm, 5*cm);
 
   G4LogicalVolume* waterTank_log
-    = new G4LogicalVolume(waterTank_box, Water,"Tank"); //,0,0,0);
+    = new G4LogicalVolume(waterTank_box, SiO2,"Tank"); //,0,0,0);
     // = new G4LogicalVolume(waterTank_box,SiO2,"Tank"); //,0,0,0);
     // = new G4LogicalVolume(waterTank_box,Water,"Tank"); //,0,0,0);
 
@@ -359,6 +408,47 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
     = new G4PVPlacement(0,G4ThreeVector(),waterTank_log,"Tank",
                         expHall_log,false,0, checkOverlaps);
 
+
+
+
+
+  // Detector box
+
+  G4Material* detector_mat = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
+  detector_mat->SetMaterialPropertiesTable(myMPT2);
+
+
+  G4Box * DetectorBox =
+    new G4Box("SolidShapeD",
+      1*cm, 1*cm, 1*cm);
+
+  G4LogicalVolume* logicDetector =                         
+    new G4LogicalVolume(DetectorBox,         //its solid
+                        detector_mat,          //its material
+                        "Detector");           //its name
+
+
+
+  G4ThreeVector posDetector = G4ThreeVector(0,  0*cm, 6*cm);
+  new G4PVPlacement(0,
+                    posDetector,
+                    logicDetector,
+                    "Detector",
+                    expHall_log,
+                    false,
+                    0,
+                    checkOverlaps);
+
+  ////////////////////// Sensitiveness
+
+  G4SDManager* SDManager = G4SDManager::GetSDMpointer();
+
+  LeadSD* MySD = new LeadSD("Box_Sensitive_Detector");
+
+  SDManager->AddNewDetector(MySD);
+  logicDetector->SetSensitiveDetector(MySD);
+
+  ////////////////////////////////////
 
 /*
 // The Air Bubble
