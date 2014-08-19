@@ -69,52 +69,13 @@ ExN06DetectorConstruction::~ExN06DetectorConstruction(){;}
 G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 {
 
-// ------------- Materials -------------
-
-  G4double a, z, density;
-  G4int nelements;
-
-// Air
-// 
-  G4Element* N = new G4Element("Nitrogen", "N", z=7 , a=14.01*g/mole);
-  G4Element* O = new G4Element("Oxygen"  , "O", z=8 , a=16.00*g/mole);
-
-  G4Material* Air = new G4Material("Air", density=1.29*mg/cm3, nelements=2);
-  Air->AddElement(N, 70.*perCent);
-  Air->AddElement(O, 30.*perCent);
-
-// Water
-// 
-  G4Element* H = new G4Element("Hydrogen", "H", z=1 , a=1.01*g/mole);
-
-  G4Material* Water = new G4Material("Water", density= 1.0*g/cm3, nelements=2);
-  Water->AddElement(H, 2);
-  Water->AddElement(O, 1);
 
 
-  G4String name, symbol;
-  G4int ncomponents, natoms;
 
-  // Quartz with refraction
-  a = 16.00*g/mole;
-  G4Element* elO  = new G4Element(name="Oxygen"  ,symbol="O" , z= 8., a);
-
-  a = 28.09*g/mole;
-  G4Element* elSi = new G4Element(name="Silicon", symbol="Si", z=14., a);
-
-  density = 2.200*g/cm3;
-  // density = 1.0*g/cm3;
-  G4Material* SiO2 = new G4Material(name="quartz", density, ncomponents=2);
-  SiO2->AddElement(elSi, natoms=1);
-  SiO2->AddElement(elO , natoms=2);
-
-  G4NistManager* nist = G4NistManager::Instance();
-  // G4Material* SiO2 = nist->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
-
-
-  //
-  // ------------ Generate & Add Material Properties Table ------------
-  //
+  /* -------------------------------------------------------------------------------------------
+  // Generate & Add Material Properties Table
+  // Optical Properties
+  // ------------------------------------------------------------------------------------------- */
 
 
   // Quartz refraction from:
@@ -291,9 +252,6 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
-  SiO2->SetMaterialPropertiesTable(quartzMPT);
-  // SiO2->SetMaterialPropertiesTable(myMPT1);
-  // SiO2->SetMaterialPropertiesTable(myMPT2);
 
 /*
   myMPT1->AddProperty("FASTCOMPONENT",PhotonEnergy, ScintilFast,     nEntries)
@@ -365,15 +323,14 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   myMPT1->AddConstProperty("MIEHG_FORWARD_RATIO",MIE_water_const[2]);
 */
 
-  Water->SetMaterialPropertiesTable(myMPT1);
 
   // Set the Birks Constant for the Water scintillator
 
   //Water->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
 
-//
-// Air
-//
+  //
+  // Air
+  //
   G4double RefractiveIndex2[nEntries] =
             { 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
               1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
@@ -384,7 +341,120 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   G4MaterialPropertiesTable* airMPT = new G4MaterialPropertiesTable();
   airMPT->AddProperty("RINDEX", PhotonEnergy, RefractiveIndex2, nEntries);
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* -------------------------------------------------------------------------------------------
+  // Materials
+  // ------------------------------------------------------------------------------------------- */
+
+
+  G4double a, z, density;
+  G4int nelements;
+
+  // Air
+  // 
+  G4Element* N = new G4Element("Nitrogen", "N", z=7 , a=14.01*g/mole);
+  G4Element* O = new G4Element("Oxygen"  , "O", z=8 , a=16.00*g/mole);
+
+  G4Material* Air = new G4Material("Air", density=1.29*mg/cm3, nelements=2);
+  Air->AddElement(N, 70.*perCent);
+  Air->AddElement(O, 30.*perCent);
+
   Air->SetMaterialPropertiesTable(airMPT);
+
+
+
+
+
+
+
+
+  // Water
+  // 
+  G4Element* H = new G4Element("Hydrogen", "H", z=1 , a=1.01*g/mole);
+
+  G4Material* Water = new G4Material("Water", density= 1.0*g/cm3, nelements=2);
+  Water->AddElement(H, 2);
+  Water->AddElement(O, 1);
+
+  Water->SetMaterialPropertiesTable(myMPT1);
+
+
+
+
+
+
+
+  G4String name, symbol;
+  G4int ncomponents, natoms;
+
+  // Quartz with refraction
+  //
+
+  a = 16.00*g/mole;
+  G4Element* elO  = new G4Element(name="Oxygen"  ,symbol="O" , z= 8., a);
+
+  a = 28.09*g/mole;
+  G4Element* elSi = new G4Element(name="Silicon", symbol="Si", z=14., a);
+
+  density = 2.200*g/cm3;
+  // density = 1.0*g/cm3;
+  G4Material* SiO2 = new G4Material(name="quartz", density, ncomponents=2);
+  SiO2->AddElement(elSi, natoms=1);
+  SiO2->AddElement(elO , natoms=2);
+
+  G4NistManager* nist = G4NistManager::Instance();
+  // G4Material* SiO2 = nist->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
+
+  SiO2->SetMaterialPropertiesTable(quartzMPT);
+  // SiO2->SetMaterialPropertiesTable(myMPT1);
+  // SiO2->SetMaterialPropertiesTable(myMPT2);
+
 
 
 
@@ -509,6 +579,43 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                         0,
                         checkOverlaps);
 
+  // Detector box
+
+  G4Material* detector_mat = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
+  detector_mat->SetMaterialPropertiesTable(myMPT2);
+
+
+  G4Box * DetectorBox =
+    new G4Box("SolidShapeD",
+      5*mm, 3*cm, 5*mm);
+
+  G4LogicalVolume* logicDetector =                         
+    new G4LogicalVolume(DetectorBox,         //its solid
+                        detector_mat,          //its material
+                        "Detector");           //its name
+
+
+  new G4PVPlacement(0,
+                    posDetector,
+                    logicDetector,
+                    "Detector",
+                    expHall_log,
+                    false,
+                    0,
+                    checkOverlaps);
+
+  ////////////////////// Sensitiveness
+
+  G4SDManager* SDManager = G4SDManager::GetSDMpointer();
+
+  LeadSD* MySD = new LeadSD("Box_Sensitive_Detector");
+
+  SDManager->AddNewDetector(MySD);
+  logicDetector->SetSensitiveDetector(MySD);
+
+  ////////////////////////////////////
+
+
 
 
 
@@ -615,170 +722,10 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
-/*
-  //G4Box* TankSur = new G4Box("Tank",tank_x,tank_y,tank_z);
-  G4Box* TankSur = new G4Box("TankS", 20*mm, 40*mm, 60*mm);
-
-  G4LogicalVolume* TankSur_log
-    = new G4LogicalVolume(TankSur, Air, "TankSL"); //,0,0,0);
-    // = new G4LogicalVolume(TankSur,SiO2,"Tank"); //,0,0,0);
-    // = new G4LogicalVolume(TankSur,Water,"Tank"); //,0,0,0);
-*/
-
-
-/*
-  G4ThreeVector posBack = G4ThreeVector(0,  20*mm, 67*mm);
-  G4ThreeVector posDetector = G4ThreeVector(0,  8*cm, 5*cm);
-
-  G4RotationMatrix rotm = G4RotationMatrix();
-  rotm.rotateX(45*deg);
-  G4Transform3D transform = G4Transform3D(rotm,posBack);
-
-
-  G4VPhysicalVolume* Tank2_phys
-    = new G4PVPlacement(transform,
-                        Tank2_log,
-                        "Tank",
-                        expHall_log,
-                        false,
-                        0,
-                        checkOverlaps);
-*/
-
-
-
-  // Detector box
-
-  G4Material* detector_mat = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
-  detector_mat->SetMaterialPropertiesTable(myMPT2);
-
-
-  G4Box * DetectorBox =
-    new G4Box("SolidShapeD",
-      5*mm, 3*cm, 5*mm);
-
-  G4LogicalVolume* logicDetector =                         
-    new G4LogicalVolume(DetectorBox,         //its solid
-                        detector_mat,          //its material
-                        "Detector");           //its name
-
-
-  new G4PVPlacement(0,
-                    posDetector,
-                    logicDetector,
-                    "Detector",
-                    expHall_log,
-                    false,
-                    0,
-                    checkOverlaps);
 
 
 
 
-
-
-/*
-  G4VPhysicalVolume* TankSur_phys
-    = new G4PVPlacement(0,
-                        posTankSur,
-                        TankSur_log,
-                        "Tank",
-                        expHall_log,
-                        false,
-                        0,
-                        checkOverlaps);
-*/
-
-
-
-  ////////////////////// Sensitiveness
-
-  G4SDManager* SDManager = G4SDManager::GetSDMpointer();
-
-  LeadSD* MySD = new LeadSD("Box_Sensitive_Detector");
-
-  SDManager->AddNewDetector(MySD);
-  logicDetector->SetSensitiveDetector(MySD);
-
-  ////////////////////////////////////
-
-/*
-// The Air Bubble
-//   
-  G4Box* bubbleAir_box = new G4Box("Bubble",bubble_x,bubble_y,bubble_z);
-
-  G4LogicalVolume* bubbleAir_log
-    = new G4LogicalVolume(bubbleAir_box,Air,"Bubble",0,0,0);
-
-//G4VPhysicalVolume* bubbleAir_phys =
-      new G4PVPlacement(0,G4ThreeVector(0,2.5*m,0),bubbleAir_log,"Bubble",
-                        waterTank_log,false,0);
-*/
-
-// ------------- Surfaces --------------
-/*
-//
-// Water Tank
-//
-  G4OpticalSurface* OpWaterSurface = new G4OpticalSurface("WaterSurface");
-  OpWaterSurface->SetType(dielectric_dielectric);
-  OpWaterSurface->SetFinish(ground);
-  OpWaterSurface->SetModel(unified);
-
-
-  new G4LogicalBorderSurface("WaterSurface",
-                                 Tank1_phys,expHall_phys,OpWaterSurface);
-
-
-// Air Bubble
-//
-  G4OpticalSurface* OpAirSurface = new G4OpticalSurface("AirSurface");
-  OpAirSurface->SetType(dielectric_dielectric);
-  OpAirSurface->SetFinish(polished);
-  OpAirSurface->SetModel(glisur);
-
-  G4LogicalSkinSurface* AirSurface = 
-          new G4LogicalSkinSurface("AirSurface", bubbleAir_log, OpAirSurface);
-
-  G4OpticalSurface* opticalSurface = dynamic_cast <G4OpticalSurface*>
-        (AirSurface->GetSurface(bubbleAir_log)->GetSurfaceProperty());
-
-  if (opticalSurface) opticalSurface->DumpInfo();
-*/
-
-//
-// Generate & Add Material Properties Table attached to the optical surfaces
-//
-/*
-  const G4int num = 2;
-  G4double Ephoton[num] = {2.034*eV, 4.136*eV};
-
-  //OpticalWaterSurface 
-  G4double RefractiveIndex[num] = {1.35, 1.40};
-  G4double SpecularLobe[num]    = {0.3, 0.3};
-  G4double SpecularSpike[num]   = {0.2, 0.2};
-  G4double Backscatter[num]     = {0.2, 0.2};
-
-  G4MaterialPropertiesTable* myST1 = new G4MaterialPropertiesTable();
-  
-  myST1->AddProperty("RINDEX",                Ephoton, RefractiveIndex, num);
-  myST1->AddProperty("SPECULARLOBECONSTANT",  Ephoton, SpecularLobe,    num);
-  myST1->AddProperty("SPECULARSPIKECONSTANT", Ephoton, SpecularSpike,   num);
-  myST1->AddProperty("BACKSCATTERCONSTANT",   Ephoton, Backscatter,     num);
-
-  OpWaterSurface->SetMaterialPropertiesTable(myST1);
-
-  //OpticalAirSurface
-  G4double Reflectivity[num] = {0.3, 0.5};
-  G4double Efficiency[num]   = {0.8, 1.0};
-
-  G4MaterialPropertiesTable *myST2 = new G4MaterialPropertiesTable();
-
-  myST2->AddProperty("REFLECTIVITY", Ephoton, Reflectivity, num);
-  myST2->AddProperty("EFFICIENCY",   Ephoton, Efficiency,   num);
-
-  OpAirSurface->SetMaterialPropertiesTable(myST2);
-*/
 
 //always return the physical World
   return expHall_phys;
