@@ -13,6 +13,8 @@
 
 #include "G4VProcess.hh"
 
+#include <stdio.h>
+
 #include <iostream>
 using namespace std;
 
@@ -28,6 +30,7 @@ class G4HCofThisEvent;
 class LeadSD : public G4VSensitiveDetector
 {
   int number_of_photons_entered;
+  std::vector< G4double > arrivalTimes;
   G4String name;
   public:
     LeadSD(G4String SDname);
@@ -99,9 +102,13 @@ G4bool LeadSD::ProcessHits(G4Step* aStep, G4TouchableHistory* )//ROhist
   G4Track* aTrack = aStep->GetTrack();
   G4ParticleDefinition* aParticle = aTrack->GetDefinition();
 
+  G4double arrivalTime = 0;
+
   if(preStepPoint->GetStepStatus() == fGeomBoundary && aParticle->GetParticleName() == "opticalphoton")
   {
     number_of_photons_entered += 1;
+    arrivalTime = aTrack->GetGlobalTime();
+    arrivalTimes.push_back( arrivalTime );
   }
 
 
@@ -126,11 +133,22 @@ void LeadSD::EndOfEvent(G4HCofThisEvent*)
 {
   //HitCollection->PrintAllHits();
   cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
-  cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
-  cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
   cout << name << "\n";
   cout << number_of_photons_entered << "\n";
-  cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
-  cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
+
+
+  FILE *fp;
+  fp = fopen("photon_arrivals", "w");
+
+  fprintf(fp, "arrival_time\n");
+
+  int N = arrivalTimes.size();
+  for (int i = 0; i<N; i++)
+  {
+    fprintf(fp, "%g\n", arrivalTimes[i]);
+    // cout << arrivalTimes[i] << "\n";
+  }
+  fclose(fp);
   cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
 }
+

@@ -121,14 +121,14 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   // I. H. Malitson. Interspecimen Comparison of the Refractive Index of Fused Silica
   // at http://refractiveindex.info/?shelf=main&book=SiO2&page=Malitson
 
-  const G4int QuartzRefractionEntries = 10;
+  const G4int QuartzRefractionEntries = 101;
   G4double QuartzPhotonEnergy[QuartzRefractionEntries] =
   { 5.90476190476191*eV, 5.06122448979592*eV, 4.42857142857143*eV, 3.93650793650794*eV, 3.54285714285714*eV,
-    3.22077922077922*eV, 2.95238095238095*eV, 2.72527472527473*eV, 2.53061224489796*eV, 2.36190476190476*eV};/*,
+    3.22077922077922*eV, 2.95238095238095*eV, 2.72527472527473*eV, 2.53061224489796*eV, 2.36190476190476*eV,
     2.21428571428571*eV, 2.08403361344538*eV, 1.96825396825397*eV, 1.86466165413534*eV, 1.77142857142857*eV,
     1.68707482993197*eV, 1.61038961038961*eV, 1.54037267080745*eV, 1.47619047619048*eV, 1.41714285714286*eV,
     1.36263736263736*eV, 1.31216931216931*eV, 1.26530612244898*eV, 1.22167487684729*eV, 1.18095238095238*eV,
-    1.14285714285714*eV, 1.10714285714286*eV, 1.07359307359307*eV, 1.04201680672269*eV, 1.01224489795918*eV};/*,
+    1.14285714285714*eV, 1.10714285714286*eV, 1.07359307359307*eV, 1.04201680672269*eV, 1.01224489795918*eV,
     0.984126984126984*eV, 0.957528957528958*eV, 0.932330827067669*eV, 0.908424908424908*eV, 0.885714285714286*eV,
     0.86411149825784*eV, 0.843537414965986*eV, 0.823920265780731*eV, 0.805194805194805*eV, 0.787301587301587*eV,
     0.770186335403727*eV, 0.753799392097264*eV, 0.738095238095238*eV, 0.723032069970845*eV, 0.708571428571429*eV,
@@ -143,15 +143,19 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
     0.389324960753532*eV, 0.385093167701863*eV, 0.380952380952381*eV, 0.376899696048632*eV, 0.372932330827068*eV,
     0.369047619047619*eV, 0.365243004418262*eV, 0.361516034985423*eV, 0.357864357864358*eV, 0.354285714285714*eV,
     0.350777934936351*eV, 0.34733893557423*eV, 0.343966712898752*eV, 0.340659340659341*eV, 0.337414965986395*eV,
-    0.334231805929919*eV };*/
+    0.334231805929919*eV };
 
+
+  // the ones from the site http://refractiveindex.info/
+  // Optical constants of SiO2 (Silicon dioxide, Silica, Quartz)
+  // Malitson 1965 - Fused silica; n 0.21-3.71 µm
   G4double QuartzRefractiveIndex[QuartzRefractionEntries] =
   { 1.5383576204905, 1.5102724365895, 1.4941636611188, 1.4839008951423, 1.476891413496,
-    1.4718556531995, 1.4680936900401, 1.46519309996, 1.4628966820387, 1.4610366660574};/*,
+    1.4718556531995, 1.4680936900401, 1.46519309996, 1.4628966820387, 1.4610366660574,
     1.4594995356592, 1.458206104926, 1.4570996888769, 1.4561387969803, 1.4552924662623,
     1.454537192876, 1.4538548630589, 1.4532313266004, 1.4526553936728, 1.4521181167939,
     1.451612268629, 1.4511319566977, 1.4506723353353, 1.4502293877559, 1.4497997593263,
-    1.4493806287126, 1.4489696073537, 1.4485646603469, 1.4481640436751, 1.4477662540207};/*,
+    1.4493806287126, 1.4489696073537, 1.4485646603469, 1.4481640436751, 1.4477662540207,
     1.4473699883562, 1.4469741111889, 1.4465776278426, 1.4461796625343, 1.4457794402848,
     1.4453762719132, 1.4449695415266, 1.4445586960405, 1.4441432363602, 1.4437227099274,
     1.4432967043935, 1.4428648422301, 1.4424267761167, 1.4419821849822, 1.4415307705927,
@@ -166,9 +170,33 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
     1.414662268275, 1.4137494446147, 1.412821597528, 1.411878496148, 1.4109199044426,
     1.4099455810268, 1.4089552789703, 1.4079487456017, 1.4069257223074, 1.4058859443263,
     1.4048291405385, 1.4037550332482, 1.402663337961, 1.401553763154, 1.4004260100389,
-    1.3992797723176 };*/
+    1.3992797723176 };
 
 
+/*
+  G4double QuartzRefractiveIndex[QuartzRefractionEntries] =
+  { 1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6, 1.6, 1.6, 1.6, 1.6,
+    1.6 };
+*/
 
 
 
@@ -263,8 +291,8 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
-  // SiO2->SetMaterialPropertiesTable(quartzMPT);
-  SiO2->SetMaterialPropertiesTable(myMPT1);
+  SiO2->SetMaterialPropertiesTable(quartzMPT);
+  // SiO2->SetMaterialPropertiesTable(myMPT1);
   // SiO2->SetMaterialPropertiesTable(myMPT2);
 
 /*
@@ -366,6 +394,44 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* -------------------------------------------------------------------------------------------
+  // Geometry
+  // ------------------------------------------------------------------------------------------- */
+
 //
 // ------------- Volumes --------------
 
@@ -380,35 +446,204 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 // The experimental Hall
 //
   //G4Box* expHall_box = new G4Box("World",expHall_x,expHall_y,expHall_z);
-  G4Box* expHall_box = new G4Box("World", 10*cm, 10*cm, 10*cm);
+  G4Box* expHall_box = new G4Box("World", 15*cm, 15*cm, 15*cm);
 
   G4LogicalVolume* expHall_log
     = new G4LogicalVolume(expHall_box, Air, "World"); //,0,0,0);
     //= new G4LogicalVolume(expHall_box,Water,"World",0,0,0);
 
   G4VPhysicalVolume* expHall_phys
-    = new G4PVPlacement(0,G4ThreeVector(),expHall_log,"World",0,false,0, checkOverlaps);
+    = new G4PVPlacement(0,
+                        G4ThreeVector(),
+                        expHall_log,
+                        "World",
+                        0,
+                        false,
+                        0,
+                        checkOverlaps);
 
 
 
 
 
-// The Water Tank
-//        
-  //G4Box* waterTank_box = new G4Box("Tank",tank_x,tank_y,tank_z);
-  G4Box* waterTank_box = new G4Box("Tank", 1*cm, 1*cm, 5*cm);
 
-  G4LogicalVolume* waterTank_log
-    = new G4LogicalVolume(waterTank_box, SiO2,"Tank"); //,0,0,0);
-    // = new G4LogicalVolume(waterTank_box,SiO2,"Tank"); //,0,0,0);
-    // = new G4LogicalVolume(waterTank_box,Water,"Tank"); //,0,0,0);
+  G4ThreeVector posBack = G4ThreeVector(0,  48.5*mm, 16.5*mm);
+  // G4ThreeVector posTankSur = G4ThreeVector(0,  25*mm, 10*mm);
+  G4ThreeVector posDetector = G4ThreeVector(0,  100*mm, 16.5*mm);
 
 
-  G4VPhysicalVolume* waterTank_phys
-    = new G4PVPlacement(0,G4ThreeVector(),waterTank_log,"Tank",
-                        expHall_log,false,0, checkOverlaps);
+  // The Tanks
+  //
+  //G4Box* Tank1_box = new G4Box("Tank",tank_x,tank_y,tank_z);
+  G4Box* Tank1_box = new G4Box("Tank1b", 1.5*mm, 1.5*mm, 15*mm);
+
+  G4LogicalVolume* Tank1_log
+    = new G4LogicalVolume(Tank1_box, SiO2, "TankL1"); //,0,0,0);
+    // = new G4LogicalVolume(Tank1_box,SiO2,"Tank"); //,0,0,0);
+    // = new G4LogicalVolume(Tank1_box,Water,"Tank"); //,0,0,0);
 
 
+  G4VPhysicalVolume* Tank1_phys
+    = new G4PVPlacement(0,G4ThreeVector(), Tank1_log, "Tank1",
+                        expHall_log, false, 0, checkOverlaps);
+
+
+
+
+
+  //G4Box* Tank2_box = new G4Box("Tank",tank_x,tank_y,tank_z);
+  G4Box* Tank2_box = new G4Box("Tank2b", 1.5*mm, 50*mm, 1.5*mm);
+
+  G4LogicalVolume* Tank2_log
+    = new G4LogicalVolume(Tank2_box, SiO2,"TankL2"); //,0,0,0);
+    // = new G4LogicalVolume(Tank2_box,SiO2,"Tank"); //,0,0,0);
+    // = new G4LogicalVolume(Tank2_box,Water,"Tank"); //,0,0,0);
+
+  G4VPhysicalVolume* Tank2_phys
+    = new G4PVPlacement(0,
+                        posBack,
+                        Tank2_log,
+                        "Tank2",
+                        expHall_log,
+                        false,
+                        0,
+                        checkOverlaps);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* -------------------------------------------------------------------------------------------
+  // Optical surface
+  // ------------------------------------------------------------------------------------------- */
+
+
+  // surface crystal-glue
+
+  G4OpticalSurface* CrysOpSurface = new G4OpticalSurface("CrystalSurface");
+
+  // G4LogicalBorderSurface* SurfaceCrys[64];
+
+  // for(i=0; i<64; i++){
+    // SurfaceCrys[i] = new G4LogicalBorderSurface("CrysSurface",crystal_phys,contact_phys[i],CrysOpSurface);
+  // }
+
+  new G4LogicalBorderSurface("CrysSurface1",
+                             Tank1_phys,
+                             expHall_phys,
+                             CrysOpSurface);
+
+  new G4LogicalBorderSurface("CrysSurface2",
+                             Tank2_phys,
+                             expHall_phys,
+                             CrysOpSurface);
+  
+  G4double crys_sigma_alpha = 1;
+  
+  CrysOpSurface -> SetType(dielectric_dielectric);
+  CrysOpSurface -> SetModel(unified);
+  // CrysOpSurface -> SetFinish(ground);
+  CrysOpSurface -> SetFinish(polished);
+  CrysOpSurface -> SetSigmaAlpha(crys_sigma_alpha);
+
+  const G4int NUMcrys = 2;
+  G4double ppcrys[NUMcrys] = {2.07*eV, 3.28*eV};
+  G4double specularlobecrys[NUMcrys] = {0.05, 0.05};
+  G4double specularspikecrys[NUMcrys] = {0.85, 0.85};
+  G4double backscattercrys[NUMcrys] = {0.05, 0.05};
+  G4double reflectivitycrys[NUMcrys] = {0.99, 0.99};
+
+
+  G4MaterialPropertiesTable *CrysOpSurfaceProperty = new G4MaterialPropertiesTable();
+
+  CrysOpSurfaceProperty -> AddProperty("SPECULARLOBECONSTANT",ppcrys,specularlobecrys,NUMcrys);
+  CrysOpSurfaceProperty -> AddProperty("SPECULARSPIKECONSTANT",ppcrys,specularspikecrys,NUMcrys);
+  CrysOpSurfaceProperty -> AddProperty("BACKSCATTERCONSTANT",ppcrys,backscattercrys,NUMcrys);
+  CrysOpSurfaceProperty -> AddProperty("REFLECTIVITY",ppcrys,reflectivitycrys,NUMcrys);
+
+  CrysOpSurface -> SetMaterialPropertiesTable(CrysOpSurfaceProperty);
+
+
+
+
+
+
+
+
+
+
+
+/*
+  //G4Box* TankSur = new G4Box("Tank",tank_x,tank_y,tank_z);
+  G4Box* TankSur = new G4Box("TankS", 20*mm, 40*mm, 60*mm);
+
+  G4LogicalVolume* TankSur_log
+    = new G4LogicalVolume(TankSur, Air, "TankSL"); //,0,0,0);
+    // = new G4LogicalVolume(TankSur,SiO2,"Tank"); //,0,0,0);
+    // = new G4LogicalVolume(TankSur,Water,"Tank"); //,0,0,0);
+*/
+
+
+/*
+  G4ThreeVector posBack = G4ThreeVector(0,  20*mm, 67*mm);
+  G4ThreeVector posDetector = G4ThreeVector(0,  8*cm, 5*cm);
+
+  G4RotationMatrix rotm = G4RotationMatrix();
+  rotm.rotateX(45*deg);
+  G4Transform3D transform = G4Transform3D(rotm,posBack);
+
+
+  G4VPhysicalVolume* Tank2_phys
+    = new G4PVPlacement(transform,
+                        Tank2_log,
+                        "Tank",
+                        expHall_log,
+                        false,
+                        0,
+                        checkOverlaps);
+*/
 
 
 
@@ -420,7 +655,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   G4Box * DetectorBox =
     new G4Box("SolidShapeD",
-      1*cm, 1*cm, 1*cm);
+      5*mm, 3*cm, 5*mm);
 
   G4LogicalVolume* logicDetector =                         
     new G4LogicalVolume(DetectorBox,         //its solid
@@ -428,8 +663,6 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                         "Detector");           //its name
 
 
-
-  G4ThreeVector posDetector = G4ThreeVector(0,  0*cm, 6*cm);
   new G4PVPlacement(0,
                     posDetector,
                     logicDetector,
@@ -438,6 +671,25 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                     false,
                     0,
                     checkOverlaps);
+
+
+
+
+
+
+/*
+  G4VPhysicalVolume* TankSur_phys
+    = new G4PVPlacement(0,
+                        posTankSur,
+                        TankSur_log,
+                        "Tank",
+                        expHall_log,
+                        false,
+                        0,
+                        checkOverlaps);
+*/
+
+
 
   ////////////////////// Sensitiveness
 
@@ -475,7 +727,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
   new G4LogicalBorderSurface("WaterSurface",
-                                 waterTank_phys,expHall_phys,OpWaterSurface);
+                                 Tank1_phys,expHall_phys,OpWaterSurface);
 
 
 // Air Bubble
