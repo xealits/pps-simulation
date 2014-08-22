@@ -107,6 +107,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
     0.334231805929919*eV };
 
 
+  /*
   // the ones from the site http://refractiveindex.info/
   // Optical constants of SiO2 (Silicon dioxide, Silica, Quartz)
   // Malitson 1965 - Fused silica; n 0.21-3.71 µm
@@ -132,32 +133,33 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
     1.4099455810268, 1.4089552789703, 1.4079487456017, 1.4069257223074, 1.4058859443263,
     1.4048291405385, 1.4037550332482, 1.402663337961, 1.401553763154, 1.4004260100389,
     1.3992797723176 };
+  */
 
 
-/*
+
   G4double QuartzRefractiveIndex[QuartzRefractionEntries] =
-  { 1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6, 1.6, 1.6, 1.6, 1.6,
-    1.6 };
-*/
+  { 1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7, 1.7, 1.7, 1.7, 1.7,
+    1.7 };
+
 
 
 
@@ -199,6 +201,16 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
            5.2*mm, 4.7*mm, 4.5*mm, 4.1*mm, 3.7*mm, 3.3*mm,
            3.0*mm, 2.8*mm, 2.7*mm, 2.4*mm, 2.2*mm, 1.9*mm,
            1.7*mm, 1.4*mm };
+
+
+  G4double AbsorptionQuartz[nEntries] =
+           {150*m, 150*m, 150*m, 150*m, 150*m, 150*m,
+            150*m, 150*m, 150*m, 150*m, 150*m, 150*m,
+            150*m, 150*m, 150*m, 150*m, 150*m, 150*m,
+            150*m, 150*m, 150*m, 150*m, 150*m, 150*m,
+            150*m, 150*m, 150*m, 150*m, 150*m, 150*m,
+            150*m, 150*m };
+
 
   G4double ScintilFast[nEntries] =
             { 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
@@ -247,7 +259,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
        ->SetSpline(true);
   // quartzMPT->AddConstProperty("RINDEX", 2); // DOES NOT WORK
 
-  quartzMPT->AddProperty("ABSLENGTH",    QuartzPhotonEnergy, Absorption1,     nEntries)
+  quartzMPT->AddProperty("ABSLENGTH",    QuartzPhotonEnergy, AbsorptionQuartz,     nEntries)
        ->SetSpline(true);
 
 
@@ -687,28 +699,116 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                              expHall_phys,
                              CrysOpSurface);
   
-  G4double crys_sigma_alpha = 1;
+  // G4double crys_sigma_alpha = 1;
+  G4double crys_sigma_alpha = 0.001;
   
   CrysOpSurface -> SetType(dielectric_dielectric);
   CrysOpSurface -> SetModel(unified);
-  // CrysOpSurface -> SetFinish(ground);
-  CrysOpSurface -> SetFinish(polished);
+  CrysOpSurface -> SetFinish(ground);
+  // CrysOpSurface -> SetFinish(polished);
   CrysOpSurface -> SetSigmaAlpha(crys_sigma_alpha);
 
   const G4int NUMcrys = 2;
   G4double ppcrys[NUMcrys] = {2.07*eV, 3.28*eV};
-  G4double specularlobecrys[NUMcrys] = {0.05, 0.05};
-  G4double specularspikecrys[NUMcrys] = {0.85, 0.85};
-  G4double backscattercrys[NUMcrys] = {0.05, 0.05};
-  G4double reflectivitycrys[NUMcrys] = {0.99, 0.99};
+
+  // G4double specularlobecrys[NUMcrys] = {0.05, 0.05};
+  // G4double specularspikecrys[NUMcrys] = {0.85, 0.85};
+  // G4double specularlobecrys[NUMcrys] = {0.01, 0.01};
+  // G4double specularspikecrys[NUMcrys] = {0.89, 0.89};
+
+  // G4double backscattercrys[NUMcrys] = {0.05, 0.05};
+  // G4double reflectivitycrys[NUMcrys] = {0.99, 0.99};
+
+
+  /*
+  const G4int QuartzRefractionEntries = 101;
+  G4double QuartzPhotonEnergy[QuartzRefractionEntries] =
+  { 5.90476190476191*eV, 5.06122448979592*eV, 4.42857142857143*eV, 3.93650793650794*eV, 3.54285714285714*eV,
+    3.22077922077922*eV, 2.95238095238095*eV, 2.72527472527473*eV, 2.53061224489796*eV, 2.36190476190476*eV,
+    2.21428571428571*eV, 2.08403361344538*eV, 1.96825396825397*eV, 1.86466165413534*eV, 1.77142857142857*eV,
+    1.68707482993197*eV, 1.61038961038961*eV, 1.54037267080745*eV, 1.47619047619048*eV, 1.41714285714286*eV,
+    1.36263736263736*eV, 1.31216931216931*eV, 1.26530612244898*eV, 1.22167487684729*eV, 1.18095238095238*eV,
+    1.14285714285714*eV, 1.10714285714286*eV, 1.07359307359307*eV, 1.04201680672269*eV, 1.01224489795918*eV,
+    0.984126984126984*eV, 0.957528957528958*eV, 0.932330827067669*eV, 0.908424908424908*eV, 0.885714285714286*eV,
+    0.86411149825784*eV, 0.843537414965986*eV, 0.823920265780731*eV, 0.805194805194805*eV, 0.787301587301587*eV,
+    0.770186335403727*eV, 0.753799392097264*eV, 0.738095238095238*eV, 0.723032069970845*eV, 0.708571428571429*eV,
+    0.694677871148459*eV, 0.681318681318681*eV, 0.668463611859838*eV, 0.656084656084656*eV, 0.644155844155844*eV,
+    0.63265306122449*eV, 0.621553884711779*eV, 0.610837438423645*eV, 0.600484261501211*eV, 0.59047619047619*eV,
+    0.580796252927401*eV, 0.571428571428571*eV, 0.562358276643991*eV, 0.553571428571428*eV, 0.545054945054945*eV,
+    0.536796536796537*eV, 0.528784648187633*eV, 0.521008403361345*eV, 0.513457556935818*eV, 0.506122448979592*eV,
+    0.498993963782696*eV, 0.492063492063492*eV, 0.4853228962818*eV, 0.478764478764479*eV, 0.472380952380952*eV,
+    0.466165413533835*eV, 0.460111317254174*eV, 0.454212454212454*eV, 0.448462929475588*eV, 0.442857142857143*eV,
+    0.437389770723104*eV, 0.43205574912892*eV, 0.426850258175559*eV, 0.421768707482993*eV, 0.416806722689076*eV,
+    0.411960132890365*eV, 0.407224958949097*eV, 0.402597402597403*eV, 0.398073836276083*eV, 0.393650793650794*eV,
+    0.389324960753532*eV, 0.385093167701863*eV, 0.380952380952381*eV, 0.376899696048632*eV, 0.372932330827068*eV,
+    0.369047619047619*eV, 0.365243004418262*eV, 0.361516034985423*eV, 0.357864357864358*eV, 0.354285714285714*eV,
+    0.350777934936351*eV, 0.34733893557423*eV, 0.343966712898752*eV, 0.340659340659341*eV, 0.337414965986395*eV,
+    0.334231805929919*eV };
+  */
+/*
+  G4double specularlobecrys[QuartzRefractionEntries] = {0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
+    0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
+    0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
+    0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
+    0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
+    0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
+    0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
+    0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
+    0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
+    0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01,
+    0.01 };
+*/
+
+
+  G4double specularspikecrys[QuartzRefractionEntries] = {0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99 };
+
+  G4double backscattercrys[QuartzRefractionEntries] = {0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+    0.05 };
+  G4double reflectivitycrys[QuartzRefractionEntries] = {0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99,
+    0.99 };
+
 
 
   G4MaterialPropertiesTable *CrysOpSurfaceProperty = new G4MaterialPropertiesTable();
 
-  CrysOpSurfaceProperty -> AddProperty("SPECULARLOBECONSTANT",ppcrys,specularlobecrys,NUMcrys);
-  CrysOpSurfaceProperty -> AddProperty("SPECULARSPIKECONSTANT",ppcrys,specularspikecrys,NUMcrys);
-  CrysOpSurfaceProperty -> AddProperty("BACKSCATTERCONSTANT",ppcrys,backscattercrys,NUMcrys);
-  CrysOpSurfaceProperty -> AddProperty("REFLECTIVITY",ppcrys,reflectivitycrys,NUMcrys);
+  // CrysOpSurfaceProperty -> AddProperty("SPECULARLOBECONSTANT",ppcrys,specularlobecrys,NUMcrys);
+  // CrysOpSurfaceProperty -> AddProperty("SPECULARSPIKECONSTANT",ppcrys,specularspikecrys,NUMcrys);
+  // CrysOpSurfaceProperty -> AddProperty("SPECULARLOBECONSTANT",QuartzPhotonEnergy,specularlobecrys,QuartzRefractionEntries);
+  CrysOpSurfaceProperty -> AddProperty("SPECULARSPIKECONSTANT",QuartzPhotonEnergy,specularspikecrys,QuartzRefractionEntries);
+
+  // CrysOpSurfaceProperty -> AddProperty("BACKSCATTERCONSTANT",ppcrys,backscattercrys,NUMcrys);
+  // CrysOpSurfaceProperty -> AddProperty("REFLECTIVITY",ppcrys,reflectivitycrys,NUMcrys);
+  CrysOpSurfaceProperty -> AddProperty("BACKSCATTERCONSTANT",QuartzPhotonEnergy,backscattercrys,QuartzRefractionEntries);
+  CrysOpSurfaceProperty -> AddProperty("REFLECTIVITY",QuartzPhotonEnergy,reflectivitycrys,QuartzRefractionEntries);
+
 
   CrysOpSurface -> SetMaterialPropertiesTable(CrysOpSurfaceProperty);
 
