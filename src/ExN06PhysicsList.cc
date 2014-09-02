@@ -261,11 +261,11 @@ void ExN06PhysicsList::ConstructOp()
 
   SetVerbose(1);
   
-  //theCerenkovProcess->SetMaxNumPhotonsPerStep(20);
-  theCerenkovProcess->SetMaxNumPhotonsPerStep(1);
-  //theCerenkovProcess->SetMaxBetaChangePerStep(10.0);
-  theCerenkovProcess->SetMaxBetaChangePerStep(1.0);
   theCerenkovProcess->SetTrackSecondariesFirst(true);
+  // theCerenkovProcess->SetMaxNumPhotonsPerStep(200);
+  theCerenkovProcess->SetMaxNumPhotonsPerStep(1);
+  // theCerenkovProcess->SetMaxBetaChangePerStep(10.0);
+  theCerenkovProcess->SetMaxBetaChangePerStep(1.0);
   
   //theScintillationProcess->SetScintillationYieldFactor(1.);
   //theScintillationProcess->SetTrackSecondariesFirst(true);

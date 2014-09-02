@@ -66,6 +66,7 @@ int main(int argc,char** argv)
   // Seed the random number generator manually
   //
   G4long myseed = 345354;
+  // G4long myseed = 345354;
   CLHEP::HepRandom::setTheSeed(myseed);
 
   // User Verbose output class

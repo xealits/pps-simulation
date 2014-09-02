@@ -107,7 +107,7 @@ G4bool LeadSD::ProcessHits(G4Step* aStep, G4TouchableHistory* )//ROhist
   if(preStepPoint->GetStepStatus() == fGeomBoundary && aParticle->GetParticleName() == "opticalphoton")
   {
     number_of_photons_entered += 1;
-    arrivalTime = aTrack->GetGlobalTime();
+    arrivalTime = aTrack->GetGlobalTime() / ns; // global time in nanoseconds
     arrivalTimes.push_back( arrivalTime );
   }
 
@@ -149,6 +149,8 @@ void LeadSD::EndOfEvent(G4HCofThisEvent*)
     // cout << arrivalTimes[i] << "\n";
   }
   fclose(fp);
+  arrivalTimes.clear();
+  number_of_photons_entered = 0;
   cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
 }
 
