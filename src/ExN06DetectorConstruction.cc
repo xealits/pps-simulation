@@ -664,21 +664,23 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   // L-SHAPE
 
-  G4double length = 20*mm;
-  G4double hight = 40*mm;
-  // G4double width = 1.5*mm;
+  G4double length = 10*mm;
+  G4double hight = 80*mm;
+  G4double width = 1.5*mm;
   G4double det_overlap = 0*mm;
 
   G4double side = length/2;
   G4double top = hight/2;
 
+  G4double det_width =  width + 0.5*mm;
+
   // Tank1, Tank2, their Union
 
-  G4Box* Tank1_box = new G4Box("Tank1b", 1.5*mm, 1.5*mm, side - 1.5*mm);
-  G4Box* Tank2_box = new G4Box("Tank2b", 1.5*mm, top, 1.5*mm);
+  G4Box* Tank1_box = new G4Box("Tank1b", width, width, side - width);
+  G4Box* Tank2_box = new G4Box("Tank2b", width, top, width);
 
   G4RotationMatrix* RotNul = new G4RotationMatrix;
-  G4ThreeVector pos2 = G4ThreeVector(0, top - 1.5*mm, side);
+  G4ThreeVector pos2 = G4ThreeVector(0, top - width, side);
 
   G4UnionSolid* Tank_union =
     new G4UnionSolid("L_shape", Tank1_box, Tank2_box, RotNul, pos2); 
@@ -689,7 +691,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   G4VPhysicalVolume* TankUni_phys
     = new G4PVPlacement(0,
-                        G4ThreeVector(0, 0, side - 1.5*mm),
+                        G4ThreeVector(0, 0, side - width),
                         TankUni_log,
                         "TankL",
                         expHall_log,
@@ -700,14 +702,14 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   // Detector box
 
-  G4ThreeVector posDetector = G4ThreeVector(0,  hight, length - 1.5*mm);
+  G4ThreeVector posDetector = G4ThreeVector(0,  hight, length - width);
 
   G4Material* detector_mat = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
   detector_mat->SetMaterialPropertiesTable(myMPTdet);
 
   G4Box * DetectorBox =
     new G4Box("SolidShapeD",
-      5*mm, 1.5*mm + det_overlap, 5*mm);
+      det_width, width + det_overlap, det_width);
 
   G4LogicalVolume* logicDetector =                         
     new G4LogicalVolume(DetectorBox,         //its solid
@@ -734,12 +736,16 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   // Tank
 
   G4double length = 20*mm;
-  G4double side = (length)/2;
+  G4double width = 1.5*mm;
   G4double det_overlap = 0*mm;
 
-  G4Box* Tank1_box = new G4Box("Tank1b", 1.5*mm, 1.5*mm, side);
+  G4double side = (length)/2;
+
+  G4double det_width = width + 0.5*mm;
+
+  G4Box* Tank1_box = new G4Box("Tank1b", width, width, side);
   G4ThreeVector posTank = G4ThreeVector(0,  0*mm, side);
-  G4ThreeVector posDetector = G4ThreeVector(0,  0*mm, (2*side + 1.5*mm));
+  G4ThreeVector posDetector = G4ThreeVector(0,  0*mm, (2*side + width));
 
 
   G4LogicalVolume* Tank1_log
@@ -758,7 +764,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   G4Box * DetectorBox =
     new G4Box("SolidShapeD",
-      5*mm, 5*mm, 1.5*mm + det_overlap);
+      det_width, det_width, width + det_overlap);
 
   G4LogicalVolume* logicDetector =                         
     new G4LogicalVolume(DetectorBox,         //its solid
@@ -779,6 +785,8 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
+
+
 /*
   // VERTICAL BOX
 
@@ -786,12 +794,17 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   G4double hight = 40*mm;
   G4double det_overlap = 0*mm;
+  G4double width = 5*mm;
 
-  G4Box* Tank2_box = new G4Box("Tank2b", 1.5*mm, hight, 1.5*mm);
+  G4double top = hight/2;
 
-  G4ThreeVector posBack = G4ThreeVector(0,  hight - 1.5*mm, 1.5*mm);
+  G4double det_width = width + 0.5*mm;
 
-  G4ThreeVector posDetector = G4ThreeVector(0,  2*hight, 1.5*mm);
+  G4Box* Tank2_box = new G4Box("Tank2b", width, top, width);
+
+  G4ThreeVector posBack = G4ThreeVector(0,  top - width, width);
+
+  G4ThreeVector posDetector = G4ThreeVector(0,  2*top, width);
 
   G4LogicalVolume* Tank2_log
     = new G4LogicalVolume(Tank2_box, SiO2,"TankL2"); //,0,0,0);
@@ -815,7 +828,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   G4Box * DetectorBox =
     new G4Box("SolidShapeD",
-      5*mm, 1.5*mm + det_overlap, 5*mm);
+      det_width, width + det_overlap, det_width);
 
   G4LogicalVolume* logicDetector =                         
     new G4LogicalVolume(DetectorBox,         //its solid
