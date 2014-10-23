@@ -65,7 +65,7 @@ ExN06PrimaryGeneratorAction::ExN06PrimaryGeneratorAction()
   particleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
   //particleGun->SetParticleEnergy(50.0*MeV);
   // particleGun->SetParticleEnergy(500.0*MeV);
-  particleGun->SetParticleEnergy(500.0*GeV);
+  particleGun->SetParticleEnergy(1000.0*GeV);
   // particleGun->SetParticleEnergy(7000.0*GeV);
   // particleGun->SetParticleEnergy(350*MeV);
 }

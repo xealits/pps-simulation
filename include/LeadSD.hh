@@ -31,6 +31,7 @@ class LeadSD : public G4VSensitiveDetector
 {
   int number_of_photons_entered;
   std::vector< G4double > arrivalTimes;
+  std::vector< G4double > arrivalEnergies;
   G4String name;
   public:
     LeadSD(G4String SDname);
@@ -103,12 +104,17 @@ G4bool LeadSD::ProcessHits(G4Step* aStep, G4TouchableHistory* )//ROhist
   G4ParticleDefinition* aParticle = aTrack->GetDefinition();
 
   G4double arrivalTime = 0;
+  G4double arrivalEnergy = 0;
 
   if(preStepPoint->GetStepStatus() == fGeomBoundary && aParticle->GetParticleName() == "opticalphoton")
   {
     number_of_photons_entered += 1;
+
     arrivalTime = aTrack->GetGlobalTime() / ns; // global time in nanoseconds
     arrivalTimes.push_back( arrivalTime );
+
+    arrivalEnergy = aTrack->GetTotalEnergy() / eV; // energy of the arriving optical photon in eV
+    arrivalEnergies.push_back( arrivalEnergy );
   }
 
 
@@ -138,18 +144,21 @@ void LeadSD::EndOfEvent(G4HCofThisEvent*)
 
 
   FILE *fp;
-  fp = fopen("photon_arrivals", "w");
+  fp = fopen("photon_measurement", "w");
 
-  fprintf(fp, "arrival_time\n");
+  fprintf(fp, "№ photons arrived:\n%d\n\n", number_of_photons_entered);
+
+  fprintf(fp, "arrival_time,energy\n");
 
   int N = arrivalTimes.size();
   for (int i = 0; i<N; i++)
   {
-    fprintf(fp, "%g\n", arrivalTimes[i]);
+    fprintf(fp, "%g,%g\n", arrivalTimes[i], arrivalEnergies[i]);
     // cout << arrivalTimes[i] << "\n";
   }
   fclose(fp);
   arrivalTimes.clear();
+  arrivalEnergies.clear();
   number_of_photons_entered = 0;
   cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
 }
