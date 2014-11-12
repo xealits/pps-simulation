@@ -51,6 +51,7 @@
 #include "G4SDManager.hh"
 
 #include "LeadSD.hh"
+#include "AirSD.hh"
 
 
 
@@ -720,12 +721,12 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
-/*
+
   // L-SHAPE
 
   G4double length = 20*mm;
   G4double hight = 40*mm;
-  G4double breadth = 3*mm;
+  G4double breadth = 1*mm;
 
   // G4double width = 0.5*mm;
   G4double det_overlap = 0*mm;
@@ -787,7 +788,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                     false,
                     0,
                     checkOverlaps);
-*/
+
 
 
 
@@ -1044,6 +1045,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
+/*
   // The FOCUSED L-SHAPE
 
   // Tank
@@ -1143,7 +1145,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                     false,
                     0,
                     checkOverlaps);
-
+*/
 
 
 
@@ -1162,9 +1164,13 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   G4SDManager* SDManager = G4SDManager::GetSDMpointer();
 
   LeadSD* MySD = new LeadSD("Box_Sensitive_Detector");
-
   SDManager->AddNewDetector(MySD);
+
+  AirSD* MySD2 = new AirSD("Air_Sensitive_Detector");
+  SDManager->AddNewDetector(MySD2);
+
   logicDetector->SetSensitiveDetector(MySD);
+  expHall_log->SetSensitiveDetector(MySD2);
 
   ////////////////////////////////////
 
@@ -1397,7 +1403,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   // CrysOpSurfaceProperty -> AddProperty("SPECULARSPIKECONSTANT",QuartzPhotonEnergy,specularspikecrys,QuartzRefractionEntries);
   // CrysOpSurfaceProperty -> AddProperty("SPECULARSPIKECONSTANT", ppcrys, specspikeprob, NUMcrys);
   // G4double reflectivitycrys[NUMcrys] = {0.98, 0.98};
-  G4double reflectivitycrys[NUMcrys] = {0.90, 0.90};
+  G4double reflectivitycrys[NUMcrys] = {1, 1};
   CrysOpSurfaceProperty -> AddProperty("REFLECTIVITY",ppcrys,reflectivitycrys,NUMcrys);
   // G4double diffuseprob[NUM] = {1, 1};
   G4double diffuseprob[NUM] = {difpart, difpart};
