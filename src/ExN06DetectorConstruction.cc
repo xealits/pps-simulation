@@ -720,16 +720,17 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
-
+/*
   // L-SHAPE
-
 
   G4double length = 20*mm;
   G4double hight = 40*mm;
-  G4double width = 0.5*mm;
+  G4double breadth = 3*mm;
+
   // G4double width = 0.5*mm;
   G4double det_overlap = 0*mm;
 
+  G4double width = breadth/2;
   G4double side = length/2;
   G4double top = hight/2;
 
@@ -786,6 +787,10 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                     false,
                     0,
                     checkOverlaps);
+*/
+
+
+
 
 
 
@@ -800,10 +805,11 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   // Tank
 
-  G4double length = 40*mm;
-  G4double width = 1.5*mm;
+  G4double length = 80*mm;
+  G4double breadth = 1*mm;
   G4double det_overlap = 0*mm;
 
+  G4double width = breadth/2;
   G4double side = (length)/2;
 
   G4double det_width = width + 0.5*mm;
@@ -844,7 +850,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                     false,
                     0,
                     checkOverlaps);
-
+*/
 
 
 
@@ -1037,7 +1043,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
-/*
+
   // The FOCUSED L-SHAPE
 
   // Tank
@@ -1045,9 +1051,12 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   G4double length = 20*mm;
   G4double hight = 40*mm;
   G4double det_overlap = 0*mm;
-  G4double width = 1.5*mm;
-  G4double width_bot = 1.5*mm;
-  G4double width_top = 2*mm;
+  G4double breadth = 4*mm;
+  G4double breadth_top = 8*mm;
+
+  G4double width = breadth / 2;
+  G4double width_bot = width;
+  G4double width_top = breadth_top / 2;
 
   G4double top = hight/2;
 
@@ -1134,7 +1143,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                     false,
                     0,
                     checkOverlaps);
-*/
+
 
 
 
@@ -1245,8 +1254,8 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   // CrysOpSurface -> SetType(dielectric_dielectric);
   CrysOpSurface -> SetType(dielectric_metal);
   CrysOpSurface -> SetModel(unified);
-  CrysOpSurface -> SetFinish(ground);
-  // CrysOpSurface -> SetFinish(polished);
+  // CrysOpSurface -> SetFinish(ground);
+  CrysOpSurface -> SetFinish(polished);
   // CrysOpSurface -> SetFinish(polishedfrontpainted);
   // CrysOpSurface -> SetFinish(polishedbackpainted);
 
@@ -1380,19 +1389,19 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   G4double ppcrys[NUMcrys] = {1.07*eV, 10.28*eV};
 
 
-  G4double difpart = 0.025;
+  G4double difpart = 0.25;
   G4double specspikeprob[NUM] = {1 - difpart, 1 - difpart};
   // G4double specspikeprob[NUM] = {1, 1};
 
   // CrysOpSurfaceProperty -> AddProperty("SPECULARLOBECONSTANT",QuartzPhotonEnergy,specularlobecrys,QuartzRefractionEntries);
   // CrysOpSurfaceProperty -> AddProperty("SPECULARSPIKECONSTANT",QuartzPhotonEnergy,specularspikecrys,QuartzRefractionEntries);
-  CrysOpSurfaceProperty -> AddProperty("SPECULARSPIKECONSTANT", ppcrys, specspikeprob, NUMcrys);
+  // CrysOpSurfaceProperty -> AddProperty("SPECULARSPIKECONSTANT", ppcrys, specspikeprob, NUMcrys);
   // G4double reflectivitycrys[NUMcrys] = {0.98, 0.98};
-  G4double reflectivitycrys[NUMcrys] = {1, 1};
+  G4double reflectivitycrys[NUMcrys] = {0.90, 0.90};
   CrysOpSurfaceProperty -> AddProperty("REFLECTIVITY",ppcrys,reflectivitycrys,NUMcrys);
   // G4double diffuseprob[NUM] = {1, 1};
   G4double diffuseprob[NUM] = {difpart, difpart};
-  CrysOpSurfaceProperty -> AddProperty("DIFFUSELOBECONSTANT", ppcrys, diffuseprob, NUMcrys);
+  // CrysOpSurfaceProperty -> AddProperty("DIFFUSELOBECONSTANT", ppcrys, diffuseprob, NUMcrys);
 
   CrysOpSurface -> SetMaterialPropertiesTable(CrysOpSurfaceProperty);
 
