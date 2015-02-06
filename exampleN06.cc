@@ -59,15 +59,27 @@
 #include "G4UIExecutive.hh"
 #endif
 
+
+#include "stdio.h"
+
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-int main(int argc,char** argv)
+int main(int argc, char** argv)
 {
   // Seed the random number generator manually
   //
   // G4long myseed = 159929;
-  G4long myseed = 144563;
-  CLHEP::HepRandom::setTheSeed(myseed);
+  // G4long myseed = 144563;
+  // CLHEP::HepRandom::setTheSeed(myseed);
+  G4long seed;
+  if (argc > 1)
+    {
+      sscanf( argv[1], "%lu", &seed ); // so unsighed long is casted to G4long !
+      printf("SEED:\n%lu\n---------------------------------------------\n", seed);
+    }
+  else return 404;
+  CLHEP::HepRandom::setTheSeed(seed);
 
   // User Verbose output class
   //
@@ -107,12 +119,12 @@ int main(int argc,char** argv)
   // Initialize G4 kernel
   //
   runManager->Initialize();
-    
   // Get the pointer to the User Interface manager
   //
   G4UImanager* UImanager = G4UImanager::GetUIpointer(); 
    
-  if (argc==1)   // Define UI session for interactive mode
+  if (argc<=2)   // Define UI session for interactive mode
+    // argc should == 2, one argument -- the seed -- is necessary?
     {
 #ifdef G4UI_USE
       G4UIExecutive * ui = new G4UIExecutive(argc,argv);
@@ -126,7 +138,7 @@ int main(int argc,char** argv)
   else         // Batch mode
     {
       G4String command = "/control/execute ";
-      G4String fileName = argv[1];
+      G4String fileName = argv[2]; // the first argument is seed, the macro file goes next
       UImanager->ApplyCommand(command+fileName);
     }
    
