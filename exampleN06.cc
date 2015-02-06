@@ -41,8 +41,11 @@
 //     
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+
 #include "G4RunManager.hh"
 #include "G4UImanager.hh"
+
+G4long seed;
 
 #include "ExN06PhysicsList.hh"
 #include "ExN06PrimaryGeneratorAction.hh"
@@ -62,6 +65,8 @@
 
 #include "stdio.h"
 
+// #include "seed.hh"
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -72,10 +77,10 @@ int main(int argc, char** argv)
   // G4long myseed = 159929;
   // G4long myseed = 144563;
   // CLHEP::HepRandom::setTheSeed(myseed);
-  G4long seed;
   if (argc > 1)
     {
       sscanf( argv[1], "%lu", &seed ); // so unsighed long is casted to G4long !
+      // also the seed is global -- it is included to the filename of the output in include/LeadSD.hh (the definition of photodetector behaviour)
       printf("SEED:\n%lu\n---------------------------------------------\n", seed);
     }
   else return 404;

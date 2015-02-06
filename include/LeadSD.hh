@@ -30,9 +30,12 @@ class G4HCofThisEvent;
 class LeadSD : public G4VSensitiveDetector
 {
   int number_of_photons_entered;
+  int number_of_runs;
   std::vector< G4double > arrivalTimes;
   std::vector< G4double > arrivalEnergies;
   G4String name;
+
+  G4long seed;
   public:
     LeadSD(G4String SDname);
     ~LeadSD();
@@ -62,6 +65,9 @@ LeadSD::LeadSD(G4String SDname)
 
   name = SDname;
   number_of_photons_entered = 0;
+  number_of_runs = 1;
+
+  // seed = the_seed; !!!
   // collectionName.insert("ThompsonEyeHitCollection");
 
 }
@@ -135,16 +141,23 @@ void LeadSD::Initialize(G4HCofThisEvent* HCE)
   // HCE->AddHitsCollection(HCID, HitCollection);
 }
 
+
 void LeadSD::EndOfEvent(G4HCofThisEvent*)
 {
   //HitCollection->PrintAllHits();
+  extern G4long seed; // the seed is external global and it is initializaed from external arguments in main
   cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
+  cout << seed << "\n";
   cout << name << "\n";
   cout << number_of_photons_entered << "\n";
 
+  // the seed is global // it is not passed to the object on its creation
+  char filename[50];
+  sprintf(filename, "photon_measurement_%lu_%d", seed, number_of_runs);
 
   FILE *fp;
-  fp = fopen("photon_measurement", "w");
+  // fp = fopen("photon_measurement", "w");
+  fp = fopen(filename, "w");
 
   fprintf(fp, "№ photons arrived:\n%d\n\n", number_of_photons_entered);
 
@@ -160,6 +173,7 @@ void LeadSD::EndOfEvent(G4HCofThisEvent*)
   arrivalTimes.clear();
   arrivalEnergies.clear();
   number_of_photons_entered = 0;
+  number_of_runs++;
   cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
 }
 
