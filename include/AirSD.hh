@@ -33,7 +33,10 @@ class AirSD : public G4VSensitiveDetector
 
   std::vector< G4int > hitIds;
   std::vector< G4int > hitTimes;
+
   std::vector< G4double > hitXs;
+  std::vector< G4double > hitYs;
+  std::vector< G4double > hitZs;
 
   G4String name;
   public:
@@ -101,6 +104,7 @@ G4bool AirSD::ProcessHits(G4Step* aStep, G4TouchableHistory* )//ROhist
   }
 */
 
+/*
 
   G4StepPoint* preStepPoint = aStep->GetPreStepPoint();
   G4Track* aTrack = aStep->GetTrack();
@@ -108,6 +112,7 @@ G4bool AirSD::ProcessHits(G4Step* aStep, G4TouchableHistory* )//ROhist
 
   G4int hitId = 0;
   G4int hitTime = 0;
+  G4ThreeVector hitPosition; // = new G4ThreeVector();
 
   if ( preStepPoint->GetStepStatus() == fGeomBoundary && aParticle->GetParticleName() == "opticalphoton" )
   {
@@ -116,6 +121,10 @@ G4bool AirSD::ProcessHits(G4Step* aStep, G4TouchableHistory* )//ROhist
     hitId = aTrack->GetTrackID();
     hitIds.push_back( hitId );
     
+    hitPosition = aTrack->GetPosition();
+    hitXs.push_back( hitPosition.x() );
+    hitYs.push_back( hitPosition.y() );
+    hitZs.push_back( hitPosition.z() );
 
     hitTime = aTrack->GetGlobalTime() / ns; // global time in nanoseconds
     hitTimes.push_back( hitTime );
@@ -123,7 +132,7 @@ G4bool AirSD::ProcessHits(G4Step* aStep, G4TouchableHistory* )//ROhist
     // arrivalEnergy = aTrack->GetTotalEnergy() / eV; // energy of the arriving optical photon in eV
     // arrivalEnergies.push_back( arrivalEnergy );
   }
-
+*/
 
   return true;
 }
@@ -144,29 +153,35 @@ void AirSD::Initialize(G4HCofThisEvent* HCE)
 
 void AirSD::EndOfEvent(G4HCofThisEvent*)
 {
+
+/*
   //HitCollection->PrintAllHits();
-  cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
+  cout << "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR\n";
   cout << name << "\n";
   // cout << number_of_photons_entered << "\n";
-
 
   FILE *fp;
   fp = fopen("photon_reflections", "w");
 
   // fprintf(fp, "№ photons arrived:\n%d\n\n", number_of_photons_entered);
 
-  fprintf(fp, "track_id,hit_time\n");
+  fprintf(fp, "track_id,hit_time,x,y,z\n");
 
   int N = hitIds.size();
   for (int i = 0; i<N; i++)
   {
-    fprintf(fp, "%d,%d\n", hitIds[i], hitTimes[i]);
+    fprintf(fp, "%d,%d,%g,%g,%g\n", hitIds[i], hitTimes[i], hitXs[i], hitYs[i], hitZs[i]);
     // cout << hitIds[i] << "\n";
   }
   fclose(fp);
   hitIds.clear();
   hitTimes.clear();
+  hitXs.clear();
+  hitYs.clear();
+  hitZs.clear();
   // number_of_photons_entered = 0;
-  cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
+  cout << "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR\n";
+*/
+
 }
 

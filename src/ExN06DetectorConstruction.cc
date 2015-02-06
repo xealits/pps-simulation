@@ -192,8 +192,33 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
+  const G4int refractiveEntries = 101;
   const G4int nEntries = 32;
 
+  G4double PhotonEnergy[refractiveEntries] =
+  { 5.90476190476191*eV, 5.06122448979592*eV, 4.42857142857143*eV, 3.93650793650794*eV, 3.54285714285714*eV,
+    3.22077922077922*eV, 2.95238095238095*eV, 2.72527472527473*eV, 2.53061224489796*eV, 2.36190476190476*eV,
+    2.21428571428571*eV, 2.08403361344538*eV, 1.96825396825397*eV, 1.86466165413534*eV, 1.77142857142857*eV,
+    1.68707482993197*eV, 1.61038961038961*eV, 1.54037267080745*eV, 1.47619047619048*eV, 1.41714285714286*eV,
+    1.36263736263736*eV, 1.31216931216931*eV, 1.26530612244898*eV, 1.22167487684729*eV, 1.18095238095238*eV,
+    1.14285714285714*eV, 1.10714285714286*eV, 1.07359307359307*eV, 1.04201680672269*eV, 1.01224489795918*eV,
+    0.984126984126984*eV, 0.957528957528958*eV, 0.932330827067669*eV, 0.908424908424908*eV, 0.885714285714286*eV,
+    0.86411149825784*eV, 0.843537414965986*eV, 0.823920265780731*eV, 0.805194805194805*eV, 0.787301587301587*eV,
+    0.770186335403727*eV, 0.753799392097264*eV, 0.738095238095238*eV, 0.723032069970845*eV, 0.708571428571429*eV,
+    0.694677871148459*eV, 0.681318681318681*eV, 0.668463611859838*eV, 0.656084656084656*eV, 0.644155844155844*eV,
+    0.63265306122449*eV, 0.621553884711779*eV, 0.610837438423645*eV, 0.600484261501211*eV, 0.59047619047619*eV,
+    0.580796252927401*eV, 0.571428571428571*eV, 0.562358276643991*eV, 0.553571428571428*eV, 0.545054945054945*eV,
+    0.536796536796537*eV, 0.528784648187633*eV, 0.521008403361345*eV, 0.513457556935818*eV, 0.506122448979592*eV,
+    0.498993963782696*eV, 0.492063492063492*eV, 0.4853228962818*eV, 0.478764478764479*eV, 0.472380952380952*eV,
+    0.466165413533835*eV, 0.460111317254174*eV, 0.454212454212454*eV, 0.448462929475588*eV, 0.442857142857143*eV,
+    0.437389770723104*eV, 0.43205574912892*eV, 0.426850258175559*eV, 0.421768707482993*eV, 0.416806722689076*eV,
+    0.411960132890365*eV, 0.407224958949097*eV, 0.402597402597403*eV, 0.398073836276083*eV, 0.393650793650794*eV,
+    0.389324960753532*eV, 0.385093167701863*eV, 0.380952380952381*eV, 0.376899696048632*eV, 0.372932330827068*eV,
+    0.369047619047619*eV, 0.365243004418262*eV, 0.361516034985423*eV, 0.357864357864358*eV, 0.354285714285714*eV,
+    0.350777934936351*eV, 0.34733893557423*eV, 0.343966712898752*eV, 0.340659340659341*eV, 0.337414965986395*eV,
+    0.334231805929919*eV };
+
+/*
   G4double PhotonEnergy[nEntries] =
             { 2.034*eV, 2.068*eV, 2.103*eV, 2.139*eV,
               2.177*eV, 2.216*eV, 2.256*eV, 2.298*eV,
@@ -203,6 +228,8 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
               3.026*eV, 3.102*eV, 3.181*eV, 3.265*eV,
               3.353*eV, 3.446*eV, 3.545*eV, 3.649*eV,
               3.760*eV, 3.877*eV, 4.002*eV, 4.136*eV };
+*/
+
 //
 // Water
 //
@@ -217,14 +244,39 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
               1.36,   1.3608};
 */
 
+  G4double RefractiveIndex1[refractiveEntries] =
+  { 1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8, 1.8, 1.8, 1.8, 1.8,
+    1.8 };
+
+/*
   G4double RefractiveIndex1[nEntries] =
-            { 1.5, 1.5, 1.5, 1.5,  1.5,
-              1.5, 1.5, 1.5, 1.5,  1.5,
-              1.5, 1.5, 1.5, 1.5,  1.5,
-              1.5, 1.5, 1.5, 1.5,  1.5,
-              1.5, 1.5, 1.5, 1.5,  1.5,
-              1.5, 1.5, 1.5, 1.5,  1.5,
-              1.5, 1.5};
+            { 1.9, 1.9, 1.9, 1.9,  1.9,
+              1.9, 1.9, 1.9, 1.9,  1.9,
+              1.9, 1.9, 1.9, 1.9,  1.9,
+              1.9, 1.9, 1.9, 1.9,  1.9,
+              1.9, 1.9, 1.9, 1.9,  1.9,
+              1.9, 1.9, 1.9, 1.9,  1.9,
+              1.9, 1.9};
+*/
 
   G4double Absorption1[nEntries] =
            {3.448*m,  4.082*m,  6.329*m,  9.174*m, 12.346*m, 13.889*m,
@@ -244,19 +296,20 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
   G4double AbsorptionQuartz[nEntries] =
+           {10*m, 10*m, 10*m, 10*m, 10*m, 10*m,
+            10*m, 10*m, 10*m, 10*m, 10*m, 10*m,
+            10*m, 10*m, 10*m, 10*m, 10*m, 10*m,
+            10*m, 10*m, 10*m, 10*m, 10*m, 10*m,
+            10*m, 10*m, 10*m, 10*m, 10*m, 10*m,
+            10*m, 10*m };
+  
+            /*
            {1*m, 1*m, 1*m, 1*m, 1*m, 1*m,
             1*m, 1*m, 1*m, 1*m, 1*m, 1*m,
             1*m, 1*m, 1*m, 1*m, 1*m, 1*m,
             1*m, 1*m, 1*m, 1*m, 1*m, 1*m,
             1*m, 1*m, 1*m, 1*m, 1*m, 1*m,
             1*m, 1*m };
-            /*
-           {150*m, 150*m, 150*m, 150*m, 150*m, 150*m,
-            150*m, 150*m, 150*m, 150*m, 150*m, 150*m,
-            150*m, 150*m, 150*m, 150*m, 150*m, 150*m,
-            150*m, 150*m, 150*m, 150*m, 150*m, 150*m,
-            150*m, 150*m, 150*m, 150*m, 150*m, 150*m,
-            150*m, 150*m };
             */
 
 /*
@@ -277,7 +330,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   G4MaterialPropertiesTable* myMPT1 = new G4MaterialPropertiesTable();
 
-  myMPT1->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1,nEntries)
+  myMPT1->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1, refractiveEntries)
        ->SetSpline(true);
   // myMPT1->AddConstProperty("RINDEX", 2); // DOES NOT WORK
 
@@ -287,7 +340,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   G4MaterialPropertiesTable* myMPT2 = new G4MaterialPropertiesTable();
 
-  myMPT2->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1,nEntries)
+  myMPT2->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1, refractiveEntries)
        ->SetSpline(true);
   // myMPT2->AddConstProperty("RINDEX", 2); // DOES NOT WORK
 
@@ -307,29 +360,36 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
-  G4MaterialPropertiesTable* myMPTdet = new G4MaterialPropertiesTable();
-
-  // myMPTdet->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1,`nEntries)
-  // myMPTdet->AddProperty("RINDEX",       QuartzPhotonEnergy, QuartzRefractiveIndexRoof, QuartzRefractionEntries)
-
-  // myMPTdet->AddProperty("RINDEX",       DetOpticPhotonEnergies, DetRefractions, NumberDetOpticEntries)
-       // ->SetSpline(true);
 
 
 
+
+  G4MaterialPropertiesTable* SiO2_MPTdet = new G4MaterialPropertiesTable();
 
   // the Quart refractive index
-  // myMPTdet->AddProperty("RINDEX",       QuartzPhotonEnergy, QuartzRefractiveIndex, QuartzRefractionEntries)
-  myMPTdet->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1,nEntries)
+  SiO2_MPTdet->AddProperty("RINDEX",       QuartzPhotonEnergy, QuartzRefractiveIndex, QuartzRefractionEntries)
        ->SetSpline(true);
 
-  // myMPTdet->AddConstProperty("RINDEX", 2); // DOES NOT WORK
 
-  // myMPTdet->AddProperty("ABSLENGTH",    PhotonEnergy, Absorption2,     nEntries)
-  myMPTdet->AddProperty("ABSLENGTH",    DetOpticPhotonEnergies, DetAbsorbtions, NumberDetOpticEntries)
+  // SiO2_MPTdet->AddConstProperty("RINDEX", 2); // DOES NOT WORK
+
+  // SiO2_MPTdet->AddProperty("ABSLENGTH",    PhotonEnergy, Absorption2,     nEntries)
+  SiO2_MPTdet->AddProperty("ABSLENGTH",    DetOpticPhotonEnergies, DetAbsorbtions, NumberDetOpticEntries)
        ->SetSpline(true);
   
   // myMPT2->AddConstProperty("ABSLENGTH",    0.001*mm);
+
+
+
+  G4MaterialPropertiesTable* Sapphire_MPTdet = new G4MaterialPropertiesTable();
+
+  // the Sapphire refractive index
+  // 1.8 index
+  Sapphire_MPTdet->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1, refractiveEntries)
+       ->SetSpline(true);
+
+  Sapphire_MPTdet->AddProperty("ABSLENGTH",    DetOpticPhotonEnergies, DetAbsorbtions, NumberDetOpticEntries)
+       ->SetSpline(true);
 
 
 
@@ -340,7 +400,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
   // refractive index 1.5
-  // quartzMPT->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1,nEntries)
+  // quartzMPT->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1, refractiveEntries)
        // ->SetSpline(true);
 
   quartzMPT->AddProperty("RINDEX",       QuartzPhotonEnergy, QuartzRefractiveIndex, QuartzRefractionEntries)
@@ -348,6 +408,25 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   // quartzMPT->AddConstProperty("RINDEX", 2); // DOES NOT WORK
 
   quartzMPT->AddProperty("ABSLENGTH",    QuartzPhotonEnergy, AbsorptionQuartz,     nEntries)
+       ->SetSpline(true);
+
+
+
+
+  // Sapphire Properties
+
+  G4MaterialPropertiesTable* sapphireMPT = new G4MaterialPropertiesTable();
+
+
+  // refractive index 1.8
+  sapphireMPT->AddProperty("RINDEX",       PhotonEnergy, RefractiveIndex1, refractiveEntries)
+       ->SetSpline(true);
+
+  // sapphireMPT->AddProperty("RINDEX",       saphirePhotonEnergy, saphireRefractiveIndex, saphireRefractionEntries)
+       // ->SetSpline(true);
+  // sapphireMPT->AddConstProperty("RINDEX", 2); // DOES NOT WORK
+
+  sapphireMPT->AddProperty("ABSLENGTH",    QuartzPhotonEnergy, AbsorptionQuartz,     nEntries)
        ->SetSpline(true);
 
 
@@ -596,6 +675,15 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   // SiO2->SetMaterialPropertiesTable(myMPT2);
 
 
+  G4Material* Sapphire = new G4Material(name="Sapphire", density, ncomponents=2);
+  Sapphire->AddElement(elSi, natoms=1); // WRONG
+  Sapphire->AddElement(elO , natoms=2); // WRONG
+  // only optical density is ok
+
+  Sapphire->SetMaterialPropertiesTable(sapphireMPT);
+
+
+
 
   // Vikuiti
 
@@ -671,7 +759,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 //
   //G4Box* expHall_box = new G4Box("World",expHall_x,expHall_y,expHall_z);
   // G4Box* expHall_box = new G4Box("World", 15*cm, 15*cm, 15*cm);
-  G4Box* expHall_box = new G4Box("World", 15*cm, 15*cm, 15*cm);
+  G4Box* expHall_box = new G4Box("World", 15*cm, 15*cm, 35*cm);
 
 
   G4LogicalVolume* expHall_log
@@ -722,11 +810,12 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
+/*
   // L-SHAPE
 
-  G4double length = 20*mm;
-  G4double hight = 40*mm;
-  G4double breadth = 1*mm;
+  G4double length = 18*mm;
+  G4double hight  = 58.8*mm;
+  G4double breadth = 3*mm;
 
   // G4double width = 0.5*mm;
   G4double det_overlap = 0*mm;
@@ -749,7 +838,8 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
     new G4UnionSolid("L_shape", Tank1_box, Tank2_box, RotNul, pos2); 
 
   G4LogicalVolume* TankUni_log
-    = new G4LogicalVolume(Tank_union, SiO2,"TankL"); //,0,0,0);
+    // = new G4LogicalVolume(Tank_union, SiO2,"TankL"); //,0,0,0);
+    = new G4LogicalVolume(Tank_union, Sapphire, "TankL"); //,0,0,0);
 
 
   G4VPhysicalVolume* Tank_phys
@@ -768,7 +858,107 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   G4ThreeVector posDetector = G4ThreeVector(0,  hight, length - width);
 
   G4Material* detector_mat = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
-  detector_mat->SetMaterialPropertiesTable(myMPTdet);
+  // detector_mat->SetMaterialPropertiesTable(SiO2_MPTdet);
+  detector_mat->SetMaterialPropertiesTable(Sapphire_MPTdet);
+
+  G4Box * DetectorBox =
+    new G4Box("SolidShapeD",
+      det_width, width + det_overlap, det_width);
+
+  G4LogicalVolume* logicDetector =                         
+    new G4LogicalVolume(DetectorBox,         //its solid
+                        detector_mat,          //its material
+                        "Detector");           //its name
+
+  G4VPhysicalVolume* Det_phys =
+    new G4PVPlacement(0,
+                    posDetector,
+                    logicDetector,
+                    "Detector",
+                    expHall_log,
+                    false,
+                    0,
+                    checkOverlaps);
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+// L-SHAPE, separate bars
+
+  G4double length = 100*mm;
+  G4double hight  = 10*mm;
+  G4double breadth = 3*mm;
+
+  // G4double width = 0.5*mm;
+  G4double det_overlap = 0*mm;
+
+  G4double width = breadth/2;
+  G4double side = length/2;
+  G4double top = hight/2;
+
+  G4double det_width =  width + 0.5*mm;
+
+  // Tank2
+  // TankH, TankV
+
+  G4Box* TankH_box = new G4Box("TankHb", width, width, side - width);
+  G4Box* TankV_box = new G4Box("TankVb", width, top, width);
+
+  // G4RotationMatrix* RotNul = new G4RotationMatrix;
+  G4ThreeVector pos2 = G4ThreeVector(0, top - width, side);
+
+  // G4UnionSolid* Tank_union =
+    // new G4UnionSolid("L_shape", TankH_box, TankV_box, RotNul, pos2); 
+
+  G4LogicalVolume* TankH_log
+    = new G4LogicalVolume(TankH_box, SiO2,"TankL"); //,0,0,0);
+
+  G4LogicalVolume* TankV_log
+    = new G4LogicalVolume(TankV_box, Sapphire,"TankL"); //,0,0,0);
+    // = new G4LogicalVolume(TankV_box, SiO2,"TankL"); //,0,0,0);
+
+
+  G4VPhysicalVolume* Tank_phys
+    = new G4PVPlacement(0,
+                        G4ThreeVector(0, 0, side - width),
+                        TankH_log,
+                        "TankL",
+                        expHall_log,
+                        false,
+                        0,
+                        checkOverlaps);
+
+
+  G4VPhysicalVolume* TankV_phys
+    = new G4PVPlacement(0,
+                        G4ThreeVector(0, top - width, 2*side - width),
+                        TankV_log,
+                        "TankL",
+                        expHall_log,
+                        false,
+                        0,
+                        checkOverlaps);
+
+
+
+  // Detector box
+
+  G4ThreeVector posDetector = G4ThreeVector(0,  hight, length - width);
+
+  G4Material* detector_mat = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
+  detector_mat->SetMaterialPropertiesTable(SiO2_MPTdet);
 
   G4Box * DetectorBox =
     new G4Box("SolidShapeD",
@@ -789,6 +979,10 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                     0,
                     checkOverlaps);
 
+*/
+
+
+
 
 
 
@@ -806,8 +1000,8 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   // Tank
 
-  G4double length = 80*mm;
-  G4double breadth = 1*mm;
+  G4double length = 55.6*mm;
+  G4double breadth = 3*mm;
   G4double det_overlap = 0*mm;
 
   G4double width = breadth/2;
@@ -821,7 +1015,9 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
   G4LogicalVolume* Tank1_log
-    = new G4LogicalVolume(Tank1_box, SiO2, "TankL1"); //,0,0,0);
+    // = new G4LogicalVolume(Tank1_box, SiO2, "TankL1"); //,0,0,0);
+    = new G4LogicalVolume(Tank1_box, Sapphire, "TankL1"); //,0,0,0);
+
 
 
   G4VPhysicalVolume* Tank_phys
@@ -832,7 +1028,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   // Detector box
 
   G4Material* detector_mat = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
-  detector_mat->SetMaterialPropertiesTable(myMPTdet);
+  detector_mat->SetMaterialPropertiesTable(SiO2_MPTdet);
 
   G4Box * DetectorBox =
     new G4Box("SolidShapeD",
@@ -871,14 +1067,16 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
-/*
+
   // VERTICAL BOX
 
   // Tank
 
-  G4double hight = 40*mm;
+  G4double hight = 50*mm;
   G4double det_overlap = 0*mm;
-  G4double width = 1.5*mm;
+  G4double breadth = 3*mm;
+
+  G4double width = breadth/2;
   G4double forward_width = width;
 
   G4double top = hight/2;
@@ -910,7 +1108,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   // Detector box
 
   G4Material* detector_mat = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
-  detector_mat->SetMaterialPropertiesTable(myMPTdet);
+  detector_mat->SetMaterialPropertiesTable(SiO2_MPTdet);
 
   G4Box * DetectorBox =
     new G4Box("SolidShapeD",
@@ -930,7 +1128,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                     false,
                     0,
                     checkOverlaps);
-*/
+
 
 
 
@@ -1007,7 +1205,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   // Detector box
 
   G4Material* detector_mat = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
-  detector_mat->SetMaterialPropertiesTable(myMPTdet);
+  detector_mat->SetMaterialPropertiesTable(SiO2_MPTdet);
 
   G4Box * DetectorBox =
     new G4Box("SolidShapeD",
@@ -1053,8 +1251,11 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   G4double length = 20*mm;
   G4double hight = 40*mm;
   G4double det_overlap = 0*mm;
-  G4double breadth = 4*mm;
-  G4double breadth_top = 8*mm;
+  // G4double breadth = 0.5*mm;  G4double breadth_top = 0.6*mm;
+  // G4double breadth = 1*mm;  G4double breadth_top = 1.1*mm;
+  // G4double breadth = 2*mm;  G4double breadth_top = 2.2*mm;
+  // G4double breadth = 3*mm;  G4double breadth_top = 3.2*mm;
+  G4double breadth = 4*mm;  G4double breadth_top = 4.2*mm;
 
   G4double width = breadth / 2;
   G4double width_bot = width;
@@ -1124,7 +1325,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   // Detector box
 
   G4Material* detector_mat = nist->FindOrBuildMaterial("G4_GLASS_LEAD");
-  detector_mat->SetMaterialPropertiesTable(myMPTdet);
+  detector_mat->SetMaterialPropertiesTable(SiO2_MPTdet);
 
   G4Box * DetectorBox =
     new G4Box("SolidShapeD",
@@ -1240,8 +1441,19 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
   new G4LogicalBorderSurface("CrysSurface1",
                              Tank_phys,
+                             // TankV_phys,
                              expHall_phys,
                              CrysOpSurface);
+
+
+/*
+  new G4LogicalBorderSurface("CrysSurfaceV",
+                             // Tank_phys,
+                             TankV_phys,
+                             expHall_phys,
+                             CrysOpSurface);
+*/
+
 
   // new G4LogicalBorderSurface("CrysSurface2",
                              // Tank2_phys,
@@ -1402,8 +1614,8 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
   // CrysOpSurfaceProperty -> AddProperty("SPECULARLOBECONSTANT",QuartzPhotonEnergy,specularlobecrys,QuartzRefractionEntries);
   // CrysOpSurfaceProperty -> AddProperty("SPECULARSPIKECONSTANT",QuartzPhotonEnergy,specularspikecrys,QuartzRefractionEntries);
   // CrysOpSurfaceProperty -> AddProperty("SPECULARSPIKECONSTANT", ppcrys, specspikeprob, NUMcrys);
-  // G4double reflectivitycrys[NUMcrys] = {0.98, 0.98};
-  G4double reflectivitycrys[NUMcrys] = {1, 1};
+  G4double reflectivitycrys[NUMcrys] = {0.999, 0.999};
+  // G4double reflectivitycrys[NUMcrys] = {1, 1};
   CrysOpSurfaceProperty -> AddProperty("REFLECTIVITY",ppcrys,reflectivitycrys,NUMcrys);
   // G4double diffuseprob[NUM] = {1, 1};
   G4double diffuseprob[NUM] = {difpart, difpart};
