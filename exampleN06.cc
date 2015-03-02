@@ -47,7 +47,7 @@
 
 G4long seed;
 
-#include "ExN06PhysicsList.hh"
+// #include "ExN06PhysicsList.hh"
 #include "ExN06PrimaryGeneratorAction.hh"
 #include "ExN06DetectorConstruction.hh"
 #include "ExN06RunAction.hh"
@@ -64,6 +64,12 @@ G4long seed;
 
 
 #include "stdio.h"
+
+// Standard Physics List
+#include "QGSP_BERT.hh"
+// #include "LBE.hh" // Not used, doesn't work in Laurents package?
+#include "G4OpticalPhysics.hh"
+#include "G4VModularPhysicsList.hh"
 
 // #include "seed.hh"
 
@@ -97,8 +103,19 @@ int main(int argc, char** argv)
 
   // UserInitialization classes - mandatory
   //
-  G4VUserPhysicsList* physics = new ExN06PhysicsList;
+
+  // Physics
+  //
+  G4VModularPhysicsList* physics;
+  physics = new QGSP_BERT(-1);
+  //physics = new LBE;
+  // physics->SetVerboseLevel(-1);
+  physics->RegisterPhysics(new G4OpticalPhysics);
+
   runManager-> SetUserInitialization(physics);
+
+
+
   //
   G4VUserPrimaryGeneratorAction* gen_action = new ExN06PrimaryGeneratorAction;
   runManager->SetUserAction(gen_action);
