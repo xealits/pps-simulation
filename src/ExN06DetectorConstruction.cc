@@ -810,11 +810,11 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
-/*
+
   // L-SHAPE
 
-  G4double length = 18*mm;
-  G4double hight  = 58.8*mm;
+  G4double length = 38*mm;
+  G4double hight  = 65*mm;
   G4double breadth = 3*mm;
 
   // G4double width = 0.5*mm;
@@ -879,7 +879,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                     false,
                     0,
                     checkOverlaps);
-*/
+
 
 
 
@@ -1067,7 +1067,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
 
 
 
-
+/*
   // VERTICAL BOX
 
   // Tank
@@ -1128,7 +1128,7 @@ G4VPhysicalVolume* ExN06DetectorConstruction::Construct()
                     false,
                     0,
                     checkOverlaps);
-
+*/
 
 
 
